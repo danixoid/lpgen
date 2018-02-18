@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BuilderController extends Controller
 {
@@ -13,9 +14,13 @@ class BuilderController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['home']]);
+        $this->middleware('auth',['except' => ['page','content']]);
     }
 
+    /**
+     * @param string $page
+     * @return mixed
+     */
     function page($page = 'index')
     {
         $lPage = \App\LPage::whereHas('l_domain',function($q){
@@ -40,24 +45,29 @@ class BuilderController extends Controller
 
     public function iupload(Request $request)
     {
-        $uploads_dir = '/elements/images/uploads';//specify the upload folder, make sure it's writable!
-        $relative_path = '/elements/images/uploads';//specify the relative path from your elements to the upload folder
-        
+        $uploads_dir = 'images';//specify the upload folder, make sure it's writable!
+
         if ($request->hasFile('imageFileField')) 
         {
             $this->validate($request, [
                 'imageFileField' => 'required|image|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048',
             ]);
+
             $image = $request->file('imageFileField');
             $name = $image->getClientOriginalName();
-            $image->move(public_path($uploads_dir), $name);
 
-            return array('code' => 1, 'response' => $relative_path."/".$name);
+            Storage::disk('public')->put($uploads_dir . '/' . $name, file_get_contents($image->getRealPath()));
+
+            return array('code' => 1, 'response' => Storage::url($uploads_dir . '/' . $name));
         } 
         
         return array('code' => 0, 'response' => 'Ошибка загрузки!'); 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postPreview(Request $request)
     {
         // $page = preg_replace('/(href|src)=\"(?!https?:)([^\#\{\"\']+)\"/','$1="/elements/$2"',$request->page);
@@ -68,11 +78,38 @@ class BuilderController extends Controller
         return redirect()->route('builder.preview.get');
     }
 
+    /**
+     * @return mixed
+     */
     public function getPreview()
     {
         return \session('page');
     }
 
+    /**
+     * @param $domain_id
+     * @param $pagename
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function preview($domain_id, $pagename)
+    {
+        $content = '';
+
+        $page = \App\LPage::where('l_domain_id',$domain_id)
+            ->where('name',$pagename)
+            ->firstOrFail();
+
+        foreach($page->l_blocks as $block) {
+            $content .= $block->element;
+        }
+
+        return view('content',['content' => $content]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function save(Request $request)
     {
         $domain = \App\LDomain::firstOrFail();

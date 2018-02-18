@@ -34,6 +34,9 @@ Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
     // Предпросмотр страницы
     Route::post('/builder/preview', 'BuilderController@postPreview')->name('builder.preview.post');
     Route::get('/builder/preview', 'BuilderController@getPreview')->name('builder.preview.get');
+    Route::get('/builder/preview/{domain_id}/{pagename}', 'BuilderController@preview')
+        ->where('pagename', '(.*)')
+        ->name('builder.preview.domain.get');
 
     // Сохранение страницы
     Route::post('/builder/save', 'BuilderController@save')->name('builder.save');
@@ -47,5 +50,7 @@ Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
 });
 
 // Другие страницы
-Route::get('/{page?}', 'BuilderController@page')->where('page', '(.*)')->name('page');
+Route::get('/{page?}', 'BuilderController@page')
+    ->where('page', '(.*)')
+    ->name('page');
 

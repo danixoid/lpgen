@@ -12,7 +12,9 @@ class DomainSeeder extends Seeder
     public function run()
     {
         $user = \App\User::firstOrFail();
-        $domain = \App\LDomain::create([ 'name' => 'lpgen.loc', 'user_id' => $user->id ]);
-        $domain = \App\LDomain::create([ 'name' => 'b-apps.loc', 'user_id' => $user->id ]);
+        $domain = \App\LDomain::create([
+            'name' => env('LPGEN_KZ','www.b-apps.kz'),
+            'user_id' => $user->id
+        ]);
     }
 }

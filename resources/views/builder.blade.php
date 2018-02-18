@@ -117,8 +117,11 @@
     	
     		<a href="#" id="clearScreen" class="btn btn-danger btn-embossed pull-right disabled actionButtons"><span class="fui-trash"></span> Очистить</a>
     	
-			<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>
-		
+			{{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
+			<a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
+			    + $('#pageTitle span span').text(),'_blank');"  id="preview"
+               class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>
+
     		<a href="#exportModal" id="exportPage" data-toggle="modal" class="btn btn-info btn-embossed pull-right disabled actionButtons"><span class="fui-export"></span> Опубликовать</a>
 			
 			<a href="#" id="savePage" class="btn btn-primary btn-embossed pull-right disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Сохранено</span></a>
@@ -2090,8 +2093,8 @@
       </div><!-- /.modal-dialog -->
       
       </form>
-      
-  </div><!-- /.modal -->
+ iv>
+    </div><!-- /.modal -->
 	
 	
 	<!-- delete single block popup -->

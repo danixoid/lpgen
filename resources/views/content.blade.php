@@ -57,38 +57,48 @@
 
 <body data-spy="scroll" data-target="#main-navbar">
 
-@if(isset($content))
-    <div class="main-container" id="page">{!! $content !!}</div><!-- /End Main Container -->
-@else
-    <!-- Preloader -->
-        <!--
-        <div class="loader bg-white">
-            <div class="loader-inner ball-scale-ripple-multiple vh-center">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        -->
+@if(Auth::check() && preg_match('/builder\/preview/',request()->fullUrl()))
+    <style>
+        #adminpanel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background-color: #000000;
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
+    <div id="adminpanel">
+        <a href="{{ route('logout') }}"
+           onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+            Выйти
+        </a>
 
-        <div class="main-container" id="page">
-
-            
-            
-            
-
-
-
-
-
-
-    </div><!-- /End Main Container -->
-
-    <!-- Back to Top Button -->
-    <!--
-    <a href="#" class="top">Top</a>
-    -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+        </form>
+    </div>
 @endif
+
+<!-- Preloader -->
+<!--
+<div class="loader bg-white">
+    <div class="loader-inner ball-scale-ripple-multiple vh-center">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+-->
+
+    <div class="main-container" id="page">@if(isset($content)){!! $content !!}@endif</div><!-- /End Main Container -->
+
+
+<!-- Back to Top Button -->
+<!--
+<a href="#" class="top">Top</a>
+-->
 
     <!-- =========================
          SCRIPTS 

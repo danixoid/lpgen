@@ -83,10 +83,6 @@ $(window).load(function () {
 
     $("#selectDomain").on('change',function(ev){
         loadPagesByDomain($("#selectDomain").val());
-    })
-
-    $(window).bind('beforeunload', function(){
-        return '>>>>>Before You Go<<<<<<<< \n Your custom message go here';
     });
 
 });
@@ -240,11 +236,17 @@ function setPendingChanges(v) {
 
     if (v == true) {
 
+        $(window).bind('beforeunload', function(){
+            return '>>>>>Before You Go<<<<<<<< \n Your custom message go here';
+        });
+
         $('#savePage .bLabel').text("Сохранить изменения (!)");
 
         pendingChanges = true;
 
     } else {
+
+        $(window).unbind('beforeunload');
 
         $('#savePage .bLabel').text("Сохранено");
 
@@ -528,7 +530,6 @@ function makeSortable(el) {
 
 function buildeStyleElements(el, theSelector) {
 
-    console.log(theSelector);
     for (x = 0; x < editableItems[theSelector].length; x++) {
 
         //create style elements
@@ -707,7 +708,7 @@ var _oldIcon = new Array();
 
 function styleClick(el) {
 
-    theSelector = $(el).attr('data-selector');
+    var theSelector = $(el).attr('data-selector');
 
     $('#editingElement').text(theSelector);
 
@@ -866,21 +867,29 @@ function styleClick(el) {
 
         $('a#img_Link').parent().show();
 
-        //set the current SRC
-        $('.imageFileTab').find('input#imageURL').val($(el).attr('src'))
-
-
         //reset the file upload
         $('.imageFileTab').find('a.fileinput-exists').click();
 
+        var srcImg = $(el).attr('src');
+        var imgPreview = $('<img src="' + srcImg + '" />');
+
+        //set the current SRC
+        $('.imageFileTab').find('.fileinput-preview').append(imgPreview);
+        $('.imageFileTab').find('input#imageURL').val($(el).attr('src'));
 
     }
 
     if ($(el).hasClass('bg-img')) {
-        
-         $('a#img_Link').parent().show();
-            
-    } 
+
+        //reset the file upload
+        $('.imageFileTab').find('a.fileinput-exists').click();
+
+        var srcImg = $(el).css('background-image').match(/https?:\/\/[^\"]+/gi)[0];
+        var imgPreview = $('<img src="' + srcImg + '"/>');
+        $('a#img_Link').parent().show();
+        $('.imageFileTab').find('input#imageURL').val(srcImg);
+        $('.imageFileTab').find('.fileinput-preview ').append(imgPreview);
+    }
 
     if ($(el).hasClass('fa')) {
 
@@ -1121,7 +1130,7 @@ function styleClick(el) {
             }
 
             var formAction = form.attr('action');
-            
+
             $.ajax({
                 url: formAction,
                 data: formdata ? formdata : form.serialize(),
@@ -1130,50 +1139,54 @@ function styleClick(el) {
                 processData: false,
                 dataType: "json",
                 type: 'POST',
-            }).done(function (response) {
+            }).done(function (response,status) {
 
-                if (response.code == 1) {//success
-
-                    $('input#imageURL').val(response.response);
-
-                    //$(el).attr('src', response.response);
-
-                    if ($(el).hasClass('bg-img')){
-                        var bgImgUrl = "url('"+response.response+"')";
-                        $(el).css('background-image', bgImgUrl );
-                        $(el).css('-webkit-background-size', 'cover');
-                        $(el).css('-moz-background-size', 'cover');
-                        $(el).css('background-size', 'cover');
-                        $(el).css('background-repeat', 'no-repeat');
-                        $(el).css('background-position', 'center center');
-                        $(el).css('background-attachment', 'scroll');
-                    }else{
-                        $(el).attr('src', response.response);   
+                if (status == 401) {
+                    $('#auth.modal').modal('show');
+                } else {
+                    if (response.code == 1) {//success
+    
+                        $('input#imageURL').val(response.response);
+    
+                        //$(el).attr('src', response.response);
+    
+                        if ($(el).hasClass('bg-img')){
+                            var bgImgUrl = "url('"+response.response+"')";
+                            $(el).css('background-image', bgImgUrl );
+                            $(el).css('-webkit-background-size', 'cover');
+                            $(el).css('-moz-background-size', 'cover');
+                            $(el).css('background-size', 'cover');
+                            $(el).css('background-repeat', 'no-repeat');
+                            $(el).css('background-position', 'center center');
+                            $(el).css('background-attachment', 'scroll');
+                        }else{
+                            $(el).attr('src', response.response);   
+                        }
+    
+                        //reset the file upload
+                        $('.imageFileTab').find('a.fileinput-exists').click();
+    
+                        /* SANDBOX */
+    
+                        sandboxID = hasSandbox($(el))
+    
+                        if (sandboxID) {
+    
+                            elementID = $(el).attr('id');
+    
+                            $('#' + sandboxID).contents().find('#' + elementID).attr('src', response.response);
+    
+                        }
+    
+                        /* END SANDBOX */
+    
+                        
+    
+                    } else if (response.code == 0) {//error
+    
+                        alert('Something went wrong: ' + response.response)
+    
                     }
-
-                    //reset the file upload
-                    $('.imageFileTab').find('a.fileinput-exists').click();
-
-                    /* SANDBOX */
-
-                    sandboxID = hasSandbox($(el))
-
-                    if (sandboxID) {
-
-                        elementID = $(el).attr('id');
-
-                        $('#' + sandboxID).contents().find('#' + elementID).attr('src', response.response);
-
-                    }
-
-                    /* END SANDBOX */
-
-                    
-
-                } else if (response.code == 0) {//error
-
-                    alert('Something went wrong: ' + response.response)
-
                 }
 
             })
@@ -2999,7 +3012,7 @@ function savePage(e) {
         c++;
     });
 
-    console.log(blocks);
+    //console.log(blocks);
 
     var form = $('#savePageForm');
     var formAction = form.attr('action');
@@ -3012,8 +3025,17 @@ function savePage(e) {
         processData: false,
         dataType: "json",
         type: 'POST',
-    }).done(function (response) {
-        setPendingChanges(false);
+    }).done(function (response,status,xhr) {
+
+        $('#auth.modal').modal('show');
+        // alert(xhr.status);
+        if (xhr.status == 401) {
+            $('#auth.modal').modal('show');
+        } else {
+            setPendingChanges(false);
+        }
+    }).fail(function (response,status,xhr) {
+        window.location.reload();
     });
     
 

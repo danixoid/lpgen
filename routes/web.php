@@ -32,8 +32,6 @@ Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
     Route::post('/builder/iupload', 'BuilderController@iupload')->name('builder.iupload');
 
     // Предпросмотр страницы
-    Route::post('/builder/preview', 'BuilderController@postPreview')->name('builder.preview.post');
-    Route::get('/builder/preview', 'BuilderController@getPreview')->name('builder.preview.get');
     Route::get('/builder/preview/{domain_id}/{pagename}', 'BuilderController@preview')
         ->where('pagename', '(.*)')
         ->name('builder.preview.domain.get');

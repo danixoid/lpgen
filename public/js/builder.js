@@ -81,7 +81,7 @@ $(window).load(function () {
 
     loadPagesByDomain($("#selectDomain").val());
 
-    $("#selectDomain").on('change',function(ev){
+    $("#selectDomain").on('change',function(ev){;
         loadPagesByDomain($("#selectDomain").val());
     });
 
@@ -92,6 +92,8 @@ function loadPagesByDomain(domain_id) {
     var form = $('#getBlocksForm');
     var formAction = form.attr('action');
     var formMethod = form.attr('method');
+
+    $('#domainHidden').val(domain_id);
 
     $.ajax({
         url: formAction + '?domain_id=' + domain_id,
@@ -186,7 +188,7 @@ function loadPagesByDomain(domain_id) {
 
                         }
 
-                    })
+                    });
 
                     $('ul#page' + xx).append(toInsert);
 
@@ -2206,8 +2208,8 @@ $(function () {
 
         //buttons
 
-        cancelButton = $('<button type="button" class="btn btn-danger editCancelButton btn-wide"><span class="fui-cross"></span> Cancel</button>');
-        saveButton = $('<button type="button" class="btn btn-primary editSaveButton btn-wide"><span class="fui-check"></span> Save</button>');
+        cancelButton = $('<button type="button" class="btn btn-danger editCancelButton btn-wide"><span class="fui-cross"></span> Отмена</button>');
+        saveButton = $('<button type="button" class="btn btn-primary editSaveButton btn-wide"><span class="fui-check"></span> Сохранить</button>');
 
         buttonWrapper = $('<div class="editorButtons"></div>');
         buttonWrapper.append(cancelButton);
@@ -2309,9 +2311,10 @@ $(function () {
     //save page
     $('#savePage').click(function (e) {
 
+        e.preventDefault();
         savePage(e);
 
-    })
+    });
 
 
 
@@ -2493,7 +2496,7 @@ $(function () {
 
         //delete older hidden fields
 
-        $('#exportModal form input[type="hidden"]').remove();
+        // $('#exportModal form input[type="hidden"]').remove();
 
         //loop through all pages
         $('#pageList > ul').each(function () {
@@ -2623,7 +2626,7 @@ $(function () {
 
         $('#exportModal > form #exportCancel').text('Закрыть');
 
-    })
+    });
 
 
     //clear screen
@@ -2710,7 +2713,7 @@ $(function () {
 
             }
 
-        })
+        });
 
         $('#pages li').removeClass('active');
 
@@ -2773,7 +2776,7 @@ $(function () {
         //new page added, we've got pending changes
         setPendingChanges(true);
 
-    })
+    });
 
 
     $('#pages').on('click', 'li:not(.active)', function () {
@@ -2793,7 +2796,7 @@ $(function () {
 
         $('#pageTitle span span').text($(this).find('a').text());
 
-    })
+    });
 
 
     $('#pages').on('click', 'li.active .fileSave', function () {
@@ -2840,14 +2843,14 @@ $(function () {
 
             $('#pageTitle span span').text($(this).val())
 
-        })
+        });
 
         theLI.addClass('edit');
 
         //changed page title, we've got pending changes
         setPendingChanges(true);
 
-    })
+    });
 
     var theLIIndex;
 
@@ -2917,7 +2920,7 @@ $(function () {
 
     })
 
-})
+});
 
 
 function savePage(e) {
@@ -2999,7 +3002,7 @@ function savePage(e) {
 
             blocks[pageCounter].element.push(theContents.html());
 
-        })
+        });
 
         pageCounter++;
 

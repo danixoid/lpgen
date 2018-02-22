@@ -114,25 +114,39 @@
     <div class="container">
     	
     	<header class="clearfix" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
-    	
-    		<a href="#" id="clearScreen" class="btn btn-danger btn-embossed pull-right disabled actionButtons"><span class="fui-trash"></span> Очистить</a>
-    	
-			{{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
-			<a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
-			    + $('#pageTitle span span').text(),'_blank');"  id="preview"
-               class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>
 
-    		<a href="#exportModal" id="exportPage" data-toggle="modal" class="btn btn-info btn-embossed pull-right disabled actionButtons"><span class="fui-export"></span> Опубликовать</a>
-			
-			<a href="#" id="savePage" class="btn btn-primary btn-embossed pull-right disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Сохранено</span></a>
-    	
-			<form class="" role="form" id="savePageForm" target="_about" method="post" action="{!! route('builder.project') !!}">
- 				{!! csrf_field() !!}
-			</form>
-    	
-			<form class="" role="form" id="getBlocksForm" target="_about" method="post" action="{!! route('builder.blocks') !!}">
- 				{!! csrf_field() !!}
-			</form>
+            <div class="btn-group pull-right">
+                <a href="#" id="savePage" class="btn btn-primary btn-embossed disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Сохранено</span></a>
+
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+
+                <form class="" role="form" id="savePageForm" target="_about" method="post" action="{!! route('builder.project') !!}">
+                    {!! csrf_field() !!}
+                </form>
+
+
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+
+                    <li><a href="#exportModal" id="exportPage" data-toggle="modal" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
+                    {{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
+
+                    <li><a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
+			            + $('#pageTitle span span').text(),'_blank');"  id="preview"
+                           class="btn-embossed disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a></li>
+
+                    <li><a href="#" id="clearScreen" class="btn-embossed disabled actionButtons"><span class="fui-trash"></span> Очистить</a></li>
+
+				</ul>
+
+                <form class="" role="form" id="getBlocksForm" target="_about" method="post" action="{!! route('builder.blocks') !!}">
+                    {!! csrf_field() !!}
+                </form>
+			</div>
+
+
 
     		<div class="modes">
     		
@@ -2007,7 +2021,8 @@
 		<form action="{!! route('builder.save'); !!}" target="_blank" id="markupForm" method="post" class="form-horizontal">
 	{!! csrf_field() !!}
 	<input type="hidden" name="markup" value="" id="markupField">
-    
+	<input type="hidden" name="domain_id" value="" id="domainHidden">
+
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -2015,13 +2030,6 @@
               <h4 class="modal-title" id="myModalLabel"><span class="fui-export"></span> Публикация сайта</h4>
             </div>
             <div class="modal-body">
-              
-              <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Doc type</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="doctype" id="doctype" placeholder="<!DOCTYPE html>" value="<!DOCTYPE html>">
-                  </div>
-              </div>
 
               <div class="form-group">
                   <label for="title" class="col-sm-2 control-label">Title</label>
@@ -2054,7 +2062,7 @@
             </div><!-- /.modal-body -->
             <div class="modal-footer">
               <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal" id="exportCancel">Закрыть</button>
-              <button type="submit" type="button" class="btn btn-primary btn-embossed" id="exportSubmit">Опубликовать сейчас</button>
+              <button type="submit" class="btn btn-primary btn-embossed" id="exportSubmit">Опубликовать сейчас</button>
             </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -2063,39 +2071,7 @@
       
   </div><!-- /.modal -->
 	
-	
-	<!-- preview HTML popup -->
-	<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
-  
-    <form action="{!! route('builder.preview.post'); !!}" target="_blank" id="markupPreviewForm" method="post" class="form-horizontal">
-    {!! csrf_field() !!}
-	<input type="hidden" name="markup" value="" id="markupField">
-    
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4 class="modal-title" id="myModalLabel"><span class="fui-window"></span> Предпросмотр страницы</h4>
-            </div>
-            <div class="modal-body">
-              
-              <p>
-            <b>Внимание:</b> вы можете просмотреть только одну страницу; ссылки на другие странички не будут работать. 
-				Когда вы внесете изменения на странице, эта страница не обновится, поэтому нужно снова нажать кнопку "Предпросмотр".
-          </p>
-              
-            </div><!-- /.modal-body -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal" id="previewCancel">Закрыть</button>
-              <button type="submit" type="button" class="btn btn-primary btn-embossed" id="showPreview">Посмотреть</button>
-            </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-      
-      </form>
- iv>
-    </div><!-- /.modal -->
-	
+
 	
 	<!-- delete single block popup -->
 	<div class="modal fade small-modal" id="deleteBlock" tabindex="-1" role="dialog" aria-hidden="true">
@@ -2109,7 +2085,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="deleteBlockConfirm">Удалить</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="deleteBlockConfirm">Удалить</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->
@@ -2134,7 +2110,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="resetBlockConfirm">Сбросить</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="resetBlockConfirm">Сбросить</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->
@@ -2154,7 +2130,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="deleteAllConfirm">Delete</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="deleteAllConfirm">Delete</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->
@@ -2172,7 +2148,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal" id="deletePageCancel">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="deletePageConfirm">Удалить</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="deletePageConfirm">Удалить</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->
@@ -2190,7 +2166,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal" id="deletePageCancel">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="deleteElementConfirm">Delete</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="deleteElementConfirm">Delete</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->
@@ -2208,7 +2184,7 @@
 	      		</div><!-- /.modal-body -->
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Закрыть</button>
-	        		<button type="button" type="button" class="btn btn-primary btn-embossed" id="updateContentInFrameSubmit">Сохранить</button>
+	        		<button type="button" class="btn btn-primary btn-embossed" id="updateContentInFrameSubmit">Сохранить</button>
 	      		</div>
 	    	</div><!-- /.modal-content -->
 	  	</div><!-- /.modal-dialog -->

@@ -12,4 +12,9 @@ class LDomain extends Model
     {
         return $this->hasMany(\App\LPage::class);
     }
+
+    public function l_metas()
+    {
+        return $this->hasMany(\App\LMeta::class);
+    }
 }

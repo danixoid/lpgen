@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLPagesTable extends Migration
+class CreateLMetasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,18 @@ class CreateLPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('l_pages', function (Blueprint $table) {
+        Schema::create('l_metas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('l_domain_id');
             $table->string('name');
-            $table->longText('content')->nullable();
-            $table->boolean('deleted')->default(false);
+            $table->text('content')->nullable();
             $table->timestamps();
 
             $table->foreign('l_domain_id')
-                ->references('id')->on('l_domains');
+                ->references('id')
+                ->on('l_domains');
 
-            $table->unique(['l_domain_id','name']);
+            $table->index('name','l_domain_id');
         });
     }
 
@@ -35,6 +35,6 @@ class CreateLPagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('l_pages');
+        Schema::dropIfExists('l_metas');
     }
 }

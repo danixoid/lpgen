@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BuilderController extends Controller
@@ -33,9 +34,12 @@ class BuilderController extends Controller
             abort(404);
         }
 
-        return $lPage->content;
+        return view('content',['content' => $lPage->content]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index ()
     {
         $sections = \App\TSection::all();
@@ -43,6 +47,10 @@ class BuilderController extends Controller
         return view('builder',['sections' => $sections,'domains' => $l_domains]);
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function iupload(Request $request)
     {
         $uploads_dir = 'images';//specify the upload folder, make sure it's writable!
@@ -62,28 +70,6 @@ class BuilderController extends Controller
         } 
         
         return array('code' => 0, 'response' => 'Ошибка загрузки!'); 
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postPreview(Request $request)
-    {
-        // $page = preg_replace('/(href|src)=\"(?!https?:)([^\#\{\"\']+)\"/','$1="/elements/$2"',$request->page);
-        // $page = preg_replace('/(url\s?\(\s?(\&quot\;)?)(images)/','$1/elements/$3', $page);
-
-        session(['page' => $request->page]);
-
-        return redirect()->route('builder.preview.get');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPreview()
-    {
-        return \session('page');
     }
 
     /**
@@ -112,36 +98,64 @@ class BuilderController extends Controller
      */
     public function save(Request $request)
     {
-        $domain = \App\LDomain::firstOrFail();
+        $domain = \App\LDomain::findOrFail($request->domain_id);
 
-        $domain->l_pages->each(function($page){
-            if($page->deleted) $page->delete();
-        });
-        
-        foreach( $request['pages'] as $page => $content ) 
+        \App\LMeta::updateOrCreate([
+                'l_domain_id' => $domain->id,
+                'name' => 'title',
+                'content' => $request->title,
+            ],[
+                'l_domain_id' => $domain->id,
+                'name' => 'description',
+                'content' => $request->description,
+            ],[
+                'l_domain_id' => $domain->id,
+                'name' => 'keywords',
+                'content' => $request->keywords,
+            ],[
+                'l_domain_id' => $domain->id,
+                'name' => 'author',
+                'content' => $request->author,
+            ]);
+
+
+        foreach($domain->l_pages as $page)
         {
-            $content = $request->doctype . "\n" . $content;
-            $content = preg_replace("/B-Apps - Landing Page with Page Builder/", $request->title, $content);
-            $content = preg_replace("/glDescription/", $request->description, $content);
-            $content = preg_replace("/glKeywords/", $request->keywords, $content);
-            $content = preg_replace("/glAuthor/", $request->author, $content);
+            $content = '';
 
-            // $content = preg_replace('/(href|src)=\"(?!https?:)([^\{\"\']+)\"/','$1="/elements/$2"',$content);
-            // $content = preg_replace('/(url\s?\(\s?(\&quot\;)?)(images)/','$1/elements/$3', $content);
-                
-            $lPage = \App\LPage::updateOrCreate([
-                    'l_domain_id'   => $domain->id,
-                    'name'          => $page,
+            if($page->deleted)
+            {
+                $page->delete();
+            }
+            else
+            {
+                foreach($page->l_blocks as $block)
+                {
+                    $content .= $block->element;
+                };
+            }
+
+//            $content = view('content',[
+//                'metas' => $domain->l_metas,
+//                'content' => $content,
+//                '_hide_menu' => true
+//            ]);
+
+            \App\LPage::updateOrCreate([
+                    'id'            => $page->id,
                 ],[
                     'content'       => $content,
                     'deleted'       => false
                 ]);
-            
-        }
+        };
 
-        return redirect()->away('http://'.$lPage->l_domain->name);
+        return redirect()->away('http://'.$domain->name);
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function project(Request $request)
     {
         $blocks = $request->json('blocks');

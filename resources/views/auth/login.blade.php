@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <!-- Mailchimp Form -->
-                <form class="form-horizontal form-white form-margin text-white form-horizontal"
+                <form class="form-horizontal form-white form-margin text-white"
                       method="POST" action="{{ route('login') }}" role="form">
                     {{ csrf_field() }}
 

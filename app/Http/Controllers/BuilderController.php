@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BuilderController extends Controller
@@ -28,7 +27,7 @@ class BuilderController extends Controller
                 return $q->where('name',request()->getHttpHost());
             })
             ->where('name',$page)
-            ->first();
+            ->firstOrFail();
         
         if(!$lPage) {
             abort(404);

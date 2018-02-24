@@ -85,6 +85,41 @@ $(window).load(function () {
         loadPagesByDomain($("#selectDomain").val());
     });
 
+
+    $('#auth').submit(function(ev){
+        var form = $(this);
+        ev.preventDefault();
+
+        $.get('/_token',function(token) {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': token._token
+                }
+            });
+
+            $.ajax({
+                url : form.attr('action'),
+                data : form.serialize(),
+                dataType: 'json',
+                type: 'POST',
+            }).done(function (response) {
+                $('#auth .modal').modal('hide');
+                savePage(ev);
+            }).error(function (response) {
+                var mess = '';
+
+                console.log(response.responseText);
+                $.each(JSON.parse(response.responseText), function(index, value) {
+                    mess += value + "\n";
+                });
+
+                alert(mess);
+            });
+        });
+
+    })
+
 });
 
 function loadPagesByDomain(domain_id) {
@@ -3030,15 +3065,15 @@ function savePage(e) {
         type: 'POST',
     }).done(function (response,status,xhr) {
 
-        $('#auth.modal').modal('show');
         // alert(xhr.status);
         if (xhr.status == 401) {
-            $('#auth.modal').modal('show');
+            $('#auth .modal').modal('show');
         } else {
             setPendingChanges(false);
         }
     }).fail(function (response,status,xhr) {
-        window.location.reload();
+        // window.location.reload();
+        $('#auth .modal').modal('show');
     });
     
 

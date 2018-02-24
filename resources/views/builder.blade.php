@@ -115,37 +115,51 @@
     	
     	<header class="clearfix" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
 
-            <div class="btn-group pull-right">
-                <a href="#" id="savePage" class="btn btn-primary btn-embossed disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Сохранено</span></a>
+            <div class="pull-right">
+                <div class="btn-group">
+                    <a href="#" id="savePage" class="btn btn-primary btn-embossed disabled actionButtons"><span class="fui-check"></span> Проект [<span class="bLabel">Сохранено</span>]</a>
 
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
 
-                <form class="" role="form" id="savePageForm" target="_about" method="post" action="{!! route('builder.project') !!}">
-                    {!! csrf_field() !!}
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+
+                        <li><a href="#exportModal" id="exportPage" data-toggle="modal" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
+                        {{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
+
+                        <li><a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
+                            + $('#pageTitle span span').text(),'_blank');"  id="preview"
+                               class="btn-embossed disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a></li>
+
+                        <li><a href="#" id="clearScreen" class="btn-embossed disabled actionButtons"><span class="fui-trash"></span> Очистить</a></li>
+
+                    </ul>
+
+                    <form class="" role="form" id="savePageForm" target="_about" method="post" action="{!! route('builder.project') !!}">
+                        {!! csrf_field() !!}
+                    </form>
+
+
+                    <form class="" role="form" id="getBlocksForm" target="_about" method="post" action="{!! route('builder.blocks') !!}">
+                        {!! csrf_field() !!}
+                    </form>
+
+
+                </div>
+
+                <a href="{{ route('logout') }}" class="btn btn-warning btn-embossed"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="fui-user"></span> {{ Auth::user()->name }} [ Выйти ]
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
                 </form>
 
 
-				<ul class="dropdown-menu" aria-labelledby="dLabel">
-
-                    <li><a href="#exportModal" id="exportPage" data-toggle="modal" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
-                    {{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
-
-                    <li><a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
-			            + $('#pageTitle span span').text(),'_blank');"  id="preview"
-                           class="btn-embossed disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a></li>
-
-                    <li><a href="#" id="clearScreen" class="btn-embossed disabled actionButtons"><span class="fui-trash"></span> Очистить</a></li>
-
-				</ul>
-
-                <form class="" role="form" id="getBlocksForm" target="_about" method="post" action="{!! route('builder.blocks') !!}">
-                    {!! csrf_field() !!}
-                </form>
-			</div>
-
+            </div>
 
 
     		<div class="modes">
@@ -2190,7 +2204,34 @@
 	  	</div><!-- /.modal-dialog -->
 	  		  	
 	</div><!-- /.modal -->
-	
+
+	<!-- login popup -->
+    <form action="{!! route('login') !!}" id="auth" method="POST">
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h6 class="text-center m-b-md">Войти в систему</h6>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Email" name="email" required="" value="{{ old('email') }}" autofocus>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="password" class="form-control" placeholder="Пароль" name="password" required="">
+                            </div>
+                        </div>
+
+                    </div><!-- /.modal-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary btn-embossed" id="updateContentInFrameSubmit">Сохранить</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+
+        </div><!-- /.modal -->
+    </form>
+
 	<div id="loader">
 		<img src="{!! url('images/logo-black.png') !!}" alt="Loading...">
 		Загрузка элементов...

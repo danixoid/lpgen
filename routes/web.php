@@ -16,6 +16,10 @@ Auth::routes();
 
 Route::get('/', 'BuilderController@page')->name('home');
 
+Route::get('/_token', function() {
+    return response()->json([ '_token' => csrf_token() ]);
+})->name('_token');
+
 Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
 
     // 

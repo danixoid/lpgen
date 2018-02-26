@@ -58,18 +58,18 @@
 <body data-spy="scroll" data-target="#main-navbar">
 
 
-@if(preg_match('/builder/',request()->fullUrl()))
+@if(preg_match('/(builder|home)/',request()->fullUrl()))
     <!-- =========================
             HEADER
         ============================== -->
     <header id="nav1-2">
 
-    {{--<nav class="navbar bg-color" id="main-navbar">--}}
+    <nav class="navbar bg-color" id="main-navbar">
     <!-- navbar fixed on top: -->
     {{--<nav class="navbar navbar-fixed-top bg-color" id="main-navbar" role="navigation" style="background-color: rgba(82,95,109,0.6)">--}}
 
     <!-- navbar static: -->
-    <nav class="navbar navbar-static-top bg-color" id="main-navbar" role="navigation">
+    {{--<nav class="navbar navbar-static-top bg-color" id="main-navbar" role="navigation">--}}
 
             <div class="container">
 

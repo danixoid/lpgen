@@ -13,8 +13,7 @@
 
 Auth::routes();
 
-
-Route::get('/', 'BuilderController@page')->name('home');
+Route::get('/', 'BuilderController@page')->name('page');
 
 Route::get('/_token', function() {
     return response()->json([ '_token' => csrf_token() ]);
@@ -22,8 +21,8 @@ Route::get('/_token', function() {
 
 Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
 
-    // 
-    Route::get('/', 'HomeController@index')->name('home');
+    //
+    Route::get('/home', 'HomeController@index')->name('home');
 
     // Блок-шаблон
     Route::get('/skeleton', 'BuilderController@skeleton')->name('builder.skeleton');

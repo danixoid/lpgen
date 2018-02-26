@@ -52,9 +52,9 @@ $(function () {
     $(".nav-tabs a").on('click', function (e) {
         e.preventDefault();
         $(this).tab("show");
-    })
+    });
 
-})
+});
 
 
 /* END SETTINGS */
@@ -118,7 +118,7 @@ $(window).load(function () {
             });
         });
 
-    })
+    });
 
 });
 
@@ -144,14 +144,14 @@ function loadPagesByDomain(domain_id) {
         } else {
             $('#start').show();
         }
-    
+
         $('#pageList ul#page1').empty();
-        
+
         $('#pageList ul.generate-ul').remove();
         $('ul#pages li.generate-li').remove();
-        
+
         var framesForLater = [];
-    
+
         for (x = 0; x < pages.length; x++) {
 
             //does the parent UL exist?
@@ -167,10 +167,10 @@ function loadPagesByDomain(domain_id) {
                 makeSortable(newUL);
 
                 newItem = $('<option value="/' + pages[x].name + '">' + pages[x].name + '</option>')
-                
+
                 $('#internalLinksDropdown').append(newItem);
             }
-            
+
 
             for (var y = 0; y < pages[x].l_blocks.length; y++) {
 
@@ -233,7 +233,7 @@ function loadPagesByDomain(domain_id) {
 
             if (xx > 1 && typeof pages[x].name != "undefined") {
 
-                newLI = $('<li class="generate-li"><a class="plink" href="#page' + xx + '">' 
+                newLI = $('<li class="generate-li"><a class="plink" href="#page' + xx + '">'
                     + pages[x].name + '</a><span class="pageButtons"><a class="fileEdit" href="">'
                     + '<span class="fui-new"></span></a><a class="fileDel" href="">'
                     + '<span class="fui-cross"></span></a><a href="#" class="btn btn-xs btn-primary btn-embossed fileSave">'
@@ -244,7 +244,7 @@ function loadPagesByDomain(domain_id) {
             }
 
         }
-    
+
         allEmpty();
     });
 }
@@ -395,7 +395,7 @@ function makeDraggable(theID) {
 
                     $(this).show();
 
-                })
+                });
 
                 //deactivate designmode
 
@@ -403,12 +403,12 @@ function makeDraggable(theID) {
 
                     this.contentDocument.designMode = "off";
 
-                })
+                });
 
             }
         });
 
-    })
+    });
 
     $('#elements li a').each(function () {
 
@@ -416,9 +416,9 @@ function makeDraggable(theID) {
 
             e.preventDefault();
 
-        })
+        });
 
-    })
+    });
 
 }
 
@@ -505,7 +505,7 @@ function makeSortable(el) {
 
                         heightAdjustment(ui.item.find('iframe').attr('id'), true);
 
-                    })
+                    });
 
                 }
 
@@ -530,7 +530,7 @@ function makeSortable(el) {
 
                     $(this).contents().find(pageContainer).html(frameContents)
 
-                })
+                });
 
             }
 
@@ -672,7 +672,7 @@ function getParentFrameID(el) {
 
         }
 
-    })
+    });
 
     if (theID != '') {
 
@@ -699,7 +699,7 @@ function heightAdjustment(el, par) {
 
             }
 
-        })
+        });
 
         theFrame = document.getElementById(frameID);
 
@@ -796,7 +796,7 @@ function styleClick(el) {
 
             }
 
-        })
+        });
 
 
         //the pretty dropdown
@@ -859,7 +859,7 @@ function styleClick(el) {
 
             }
 
-        })
+        });
 
 
     }
@@ -949,17 +949,17 @@ function styleClick(el) {
 
             }
 
-        })
+        });
 
     }
 
 
-    //$(el).addClass('builder_active');	
+    //$(el).addClass('builder_active');
 
     //remove borders from other elements
     $('#pageList ul:visible li iframe').each(function () {
 
-        //remove borders		
+        //remove borders
 
         for (var key in editableItems) {
 
@@ -991,7 +991,7 @@ function styleClick(el) {
 
                 }
 
-            })
+            });
 
         }
 
@@ -1018,7 +1018,7 @@ function styleClick(el) {
 
         $(this).remove();
 
-    })
+    });
 
 
     //load the attributes
@@ -1058,7 +1058,7 @@ function styleClick(el) {
 
             /* END SANDBOX */
 
-        })
+        });
 
 
         //links
@@ -1182,11 +1182,11 @@ function styleClick(el) {
                     $('#auth.modal').modal('show');
                 } else {
                     if (response.code == 1) {//success
-    
+
                         $('input#imageURL').val(response.response);
-    
+
                         //$(el).attr('src', response.response);
-    
+
                         if ($(el).hasClass('bg-img')){
                             var bgImgUrl = "url('"+response.response+"')";
                             $(el).css('background-image', bgImgUrl );
@@ -1197,36 +1197,36 @@ function styleClick(el) {
                             $(el).css('background-position', 'center center');
                             $(el).css('background-attachment', 'scroll');
                         }else{
-                            $(el).attr('src', response.response);   
+                            $(el).attr('src', response.response);
                         }
-    
+
                         //reset the file upload
                         $('.imageFileTab').find('a.fileinput-exists').click();
-    
+
                         /* SANDBOX */
-    
+
                         sandboxID = hasSandbox($(el))
-    
+
                         if (sandboxID) {
-    
+
                             elementID = $(el).attr('id');
-    
+
                             $('#' + sandboxID).contents().find('#' + elementID).attr('src', response.response);
-    
+
                         }
-    
+
                         /* END SANDBOX */
-    
-                        
-    
+
+
+
                     } else if (response.code == 0) {//error
-    
+
                         alert('Something went wrong: ' + response.response)
-    
+
                     }
                 }
 
-            })
+            });
 
 
         } else if ($('a#img_Link').css('display') == 'block') {
@@ -1347,7 +1347,7 @@ function styleClick(el) {
                 $('#detailsAppliedMessage').fadeOut(1000)
             }, 3000)
 
-        })
+        });
 
         heightAdjustment(el);
 
@@ -1403,17 +1403,17 @@ function styleClick(el) {
 
                     heightAdjustment(randomEl[0])
 
-                })
+                });
 
                 $('#deleteElement').modal('hide');
 
                 closeStyleEditor();
 
-            })
+            });
 
-        })
+        });
 
-    })
+    });
 
 
     //clone button
@@ -1500,7 +1500,7 @@ function styleClick(el) {
 
         heightAdjustment(el);
 
-    })
+    });
 
 
     //reset button
@@ -1508,11 +1508,11 @@ function styleClick(el) {
 
         if ($(el).closest('body').width() != $(el).width()) {
 
-            $(el).attr('style', '').css({'outline': '3px dashed red', 'cursor': 'pointer'})
+            $(el).attr('style', '').css({'outline': '3px dashed red', 'cursor': 'pointer'});
 
         } else {
 
-            $(el).attr('style', '').css({'outline': '3px dashed red', 'outline-offset': '-3px', 'cursor': 'pointer'})
+            $(el).attr('style', '').css({'outline': '3px dashed red', 'outline-offset': '-3px', 'cursor': 'pointer'});
 
         }
 
@@ -1522,7 +1522,7 @@ function styleClick(el) {
 
             $(this).remove()
 
-        })
+        });
 
         //reset icon
 
@@ -1546,7 +1546,7 @@ function styleClick(el) {
 
                 }
 
-            })
+            });
 
         }
 
@@ -1554,7 +1554,7 @@ function styleClick(el) {
             buildeStyleElements(el, theSelector)
         }, 550)
 
-    })
+    });
 
 
 
@@ -1572,7 +1572,7 @@ function closeStyleEditor() {
 
         $('#pageList ul li iframe').each(function () {
 
-            //remove hover events used by Styling modus			
+            //remove hover events used by Styling modus
 
             for (var key in editableItems) {
 
@@ -1625,11 +1625,11 @@ function closeStyleEditor() {
 
                     }
 
-                })
+                });
 
             }
 
-        })
+        });
 
     }
 
@@ -1644,13 +1644,13 @@ $(function () {
 
         $('input#vimeoID').val('');
 
-    })
+    });
 
     $('input#vimeoID').focus(function () {
 
         $('input#youtubeID').val('');
 
-    })
+    });
 
 
     //chosen font-awesome dropdown
@@ -1692,7 +1692,7 @@ $(function () {
 
         $('.link_Tab .btn-group.select:eq(1) > button .filter-option').text($('.link_Tab .btn-group.select:eq(1) .dropdown-menu li:first').text())
 
-    })
+    });
 
     $('select#pageLinksDropdown').selectpicker({style: 'btn-sm btn-default', menuStyle: 'dropdown-inverse'});
 
@@ -1704,7 +1704,7 @@ $(function () {
 
         $('.link_Tab .btn-group.select:eq(0) > button .filter-option').text($('.link_Tab .btn-group.select:eq(0) .dropdown-menu li:first').text())
 
-    })
+    });
 
 
     $('input#internalLinksCustom').focus(function () {
@@ -1718,14 +1718,14 @@ $(function () {
 
         this.select();
 
-    })
+    });
 
 
     $('#detailsAppliedMessageHide').click(function () {
 
         $(this).parent().fadeOut(500)
 
-    })
+    });
 
 
     //hide style editor option?
@@ -1740,7 +1740,7 @@ $(function () {
 
         closeStyleEditor();
 
-    })
+    });
 
 
     $('#styleEditor form').on("focus", "input", function () {
@@ -1761,9 +1761,9 @@ $(function () {
             $(this).css('position', 'relative');
             $(this).css('right', 'auto');
 
-        })
+        });
 
-    })
+    });
 
 
     $('#menu #second ul>li').each(function(){
@@ -1777,7 +1777,7 @@ $(function () {
         //draggables
         makeDraggable('#page1')
     });
-    
+
     //main menu hide/show
 
 
@@ -1790,12 +1790,12 @@ $(function () {
 
         $(this).stop().animate({'left': '-190px'}, 500);
 
-    })
+    });
 
     //use function call to make the ULs sortable
     makeSortable($('#pageList ul#page1'));
 
-    //second menu animation		
+    //second menu animation
     $('#menu #main #elements').on('click', 'a:not(.btn)', function () {
 
         $('#menu #main a').removeClass('active');
@@ -1816,7 +1816,7 @@ $(function () {
         }, 500);
 
 
-    })
+    });
 
     //second nav hide button
     $('#menu').mouseleave(function () {
@@ -1838,7 +1838,7 @@ $(function () {
 
         e.preventDefault();
 
-    })
+    });
 
     $('#menu').mouseleave(function () {
 
@@ -1884,7 +1884,7 @@ $(function () {
 
             $(this).hide();
 
-        })
+        });
 
 
 
@@ -1899,7 +1899,7 @@ $(function () {
 
             }
 
-        })
+        });
 
 
 
@@ -1917,11 +1917,11 @@ $(function () {
 
                     $(this).contents().find(pageContainer + ' ' + editableContent[i]).hover(function () {
 
-                        $(this).css({'outline': '3px dashed red', 'cursor': 'pointer'})
+                        $(this).css({'outline': '3px dashed red', 'cursor': 'pointer'});
 
                     }, function () {
 
-                        $(this).css({'outline': '', 'cursor': ''})
+                        $(this).css({'outline': '', 'cursor': ''});
 
                     }).click(function (e) {
 
@@ -1978,7 +1978,7 @@ $(function () {
 
                 }
 
-            })
+            });
 
 
 
@@ -1990,7 +1990,7 @@ $(function () {
 
                 $(this).show();
 
-            })
+            });
 
             //deactivate designmode
 
@@ -2005,7 +2005,7 @@ $(function () {
 
                 this.contentDocument.designMode = "off";
 
-            })
+            });
 
         } else if ($(this).val() == 'styling') {
 
@@ -2035,7 +2035,7 @@ $(function () {
 
                     }, function () {
 
-                        $(this).css({'outline': '', 'cursor': '', 'outline-offset': ''})
+                        $(this).css({'outline': '', 'cursor': '', 'outline-offset': ''});
 
                     }).click(function (e) {
 
@@ -2054,7 +2054,7 @@ $(function () {
 
                 }
 
-            })
+            });
 
         }
 
@@ -2098,7 +2098,7 @@ $(function () {
         //element was deleted, so we've got pending changes
         setPendingChanges(true)
 
-    })
+    });
 
 
     //close styleEditor
@@ -2108,7 +2108,7 @@ $(function () {
 
         closeStyleEditor();
 
-    })
+    });
 
 
     //delete blocks from window
@@ -2150,9 +2150,9 @@ $(function () {
 
                 setPendingChanges(true)
 
-            })
+            });
 
-        })
+        });
 
     });
 
@@ -2183,7 +2183,7 @@ $(function () {
 
             /* END SANDBOX */
 
-        })
+        });
 
     });
 
@@ -2210,7 +2210,7 @@ $(function () {
         if ($(this).closest('li').height() < 300){
             $(this).closest('li').height(300);
             theEditor.height(300);
-        } else { 
+        } else {
             theEditor.height($(this).closest('li').height());
         }
 
@@ -2274,7 +2274,7 @@ $(function () {
 
             $(this).remove();
 
-        })
+        });
 
     });
 
@@ -2335,7 +2335,7 @@ $(function () {
 
             $(this).remove();
 
-        })
+        });
 
         setPendingChanges(true)
 
@@ -2421,7 +2421,7 @@ $(function () {
                             $(this).removeAttr('style')
                         }
 
-                    })
+                    });
 
                 }
                 for (i = 0; i < editableContent.length; ++i) {
@@ -2430,7 +2430,7 @@ $(function () {
 
                         $(this).removeAttr('data-selector');
 
-                    })
+                    });
 
                 }
 
@@ -2465,7 +2465,7 @@ $(function () {
 
                         }
 
-                    })
+                    });
 
                 }
 
@@ -2479,7 +2479,7 @@ $(function () {
 
             newInput.val("<html>" + $('iframe#skeleton').contents().find('html').html() + "</html>")
 
-        })
+        });
 
     });
 
@@ -2588,7 +2588,7 @@ $(function () {
                             $(this).removeAttr('style')
                         }
 
-                    })
+                    });
 
                 }
                 //rm1
@@ -2598,7 +2598,7 @@ $(function () {
 
                         $(this).removeAttr('data-selector');
 
-                    })
+                    });
 
                 }
                 //rm1
@@ -2633,7 +2633,7 @@ $(function () {
 
                         }
 
-                    })
+                    });
 
                 }
 
@@ -2649,7 +2649,7 @@ $(function () {
 
             newInput.val("<html>" + $('iframe#skeleton').contents().find('html').html() + "</html>")
 
-        })
+        });
 
     });
 
@@ -2688,9 +2688,9 @@ $(function () {
 
                 $(this).remove();
 
-            })
+            });
 
-        })
+        });
 
         setPendingChanges(true);
 
@@ -2720,7 +2720,7 @@ $(function () {
 
             $('#internalLinksDropdown option:eq(' + $(this).parent().index() + ')').text($(this).val()).attr('value', $(this).val() + ".html");
 
-            $('select#internalLinksDropdown').selectpicker({style: 'btn-sm btn-default', menuStyle: 'dropdown-inverse'})
+            $('select#internalLinksDropdown').selectpicker({style: 'btn-sm btn-default', menuStyle: 'dropdown-inverse'});
 
             //alert( ($(this).parent().index())+" : "+$(this).val() )
 
@@ -2729,7 +2729,7 @@ $(function () {
 
         }
 
-    })
+    });
 
     $('#addPage').click(function (e) {
 
@@ -2772,7 +2772,7 @@ $(function () {
 
             $('#pageTitle span span').text($(this).val())
 
-        })
+        });
 
         newPageLI.addClass('active').addClass('edit');
 
@@ -2900,7 +2900,7 @@ $(function () {
 
             $('#deletePage').modal('hide');
 
-        })
+        });
 
         $('#deletePage').off('click').on('click', '#deletePageConfirm', function (e) {
 
@@ -2943,7 +2943,7 @@ $(function () {
             setPendingChanges(true);
 
 
-        })
+        });
 
     });
 
@@ -2953,7 +2953,7 @@ $(function () {
 
         $('#editContentModal #contentToEdit').redactor('core.destroy');
 
-    })
+    });
 
 });
 
@@ -3020,7 +3020,7 @@ function savePage(e) {
                         $(this).removeAttr('style')
                     }
 
-                })
+                });
 
             }
             //rm1

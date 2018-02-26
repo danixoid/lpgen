@@ -7,7 +7,7 @@
 <!-- =============================
  RESET PASSWORD
 ============================== -->
-<section id="subscription5-3" class="p-y-lg subscription bg-edit bg-img" style="background-image:url('/elements/images/uploads/arrow_stephen_amell_oliver_queen_105575_1366x768.jpg')">
+<section class="p-y-lg bg-green bg-edit">
 
     <div class="overlay"></div>
     <div class="container">

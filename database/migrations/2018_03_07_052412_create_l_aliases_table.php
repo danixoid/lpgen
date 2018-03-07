@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLDomainsTable extends Migration
+class CreateLAliasesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateLDomainsTable extends Migration
      */
     public function up()
     {
-        Schema::create('l_domains', function (Blueprint $table) {
+        Schema::create('l_aliases', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('l_domain_id');
             $table->timestamps();
-            
-            $table->foreign('user_id')
+
+            $table->foreign('l_domain_id')
                 ->references('id')
-                ->on('users');
+                ->on('l_domains');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateLDomainsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('l_domains');
+        Schema::dropIfExists('l_aliases');
     }
 }

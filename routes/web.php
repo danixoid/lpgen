@@ -24,12 +24,16 @@ Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
     //
     Route::get('/home', 'HomeController@index')->name('home');
 
+
+    // Управление доменом
+    Route::resource('domain', 'DomainController');
+
     // Блок-шаблон
     Route::get('/skeleton', 'BuilderController@skeleton')->name('builder.skeleton');
     Route::get('/content/{content}', 'BuilderController@content')->name('builder.content');
 
     // Главная страница PageBuilder
-    Route::get('/builder','BuilderController@index')->name('builder.index');
+//    Route::get('/builder','BuilderController@index')->name('builder.index');
 
     // Загрузка файлов
     Route::post('/builder/iupload', 'BuilderController@iupload')->name('builder.iupload');
@@ -47,6 +51,9 @@ Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
 
     // Получение блоков
     Route::post('/builder/blocks', 'BuilderController@blocks')->name('builder.blocks');
+
+    // Получение по ИД
+    Route::get('/builder/{id?}','BuilderController@show')->name('builder.show');
 
 });
 

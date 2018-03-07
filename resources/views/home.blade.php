@@ -1,23 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+    <section class="p-y-lg bg-green bg-edit">
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+        <div class="overlay"></div>
+        <div class="container">
+            <!-- Section Header -->
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="section-header text-center text-white wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
+                        <h2>Добро пожаловать!</h2>
+                        <p class="lead"></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>asdf</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>asdf</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+            </div><!-- /End Row -->
+        </div><!-- /End Container -->
+
+    </section>
 @endsection

@@ -28,7 +28,7 @@
 
                     <h6 class="text-center m-b-md">Введите регистрационные данные</h6>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Имя" value="{{ old('name') }}" name="email" autofocus required="">
+                        <input type="text" class="form-control" placeholder="Имя" value="{{ old('name') }}" name="name" autofocus required="">
                         @if ($errors->has('name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('name') }}</strong>

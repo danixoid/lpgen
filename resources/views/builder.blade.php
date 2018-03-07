@@ -149,10 +149,22 @@
 
                 </div>
 
-                <a href="{{ route('logout') }}" class="btn btn-warning btn-embossed"
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <span class="fui-user"></span> {{ Auth::user()->name }} [ Выйти ]
-                </a>
+                <div class="btn-group">
+                    <a href="{!! route('home') !!}" id="profile" class="btn btn-warning btn-embossed actionButtons"><span class="fui-user"></span> {{ Auth::user()->name }}</a>
+
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dProfile">
+                        <li><a href="{{ route('logout') }}" class="btn-embossed actionButtons"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <span class="fui-user"></span> Выйти</a></li>
+
+
+                    </ul>
+                </div>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
@@ -193,11 +205,12 @@
     			</div>
     			
     			<div class="title" id="pageTitle">
-					<span>http://<select id="selectDomain">
+					<span>http://{!! $domain->name !!}{{--<select id="selectDomain">
 					@foreach($domains as $domain)
 						<option value="{!! $domain->id !!}">{!! $domain->name !!}</option>
 					@endforeach
-					</select>/<span>index</span></span>
+					</select>--}}/<span>index</span></span>
+                    <input type="hidden" id="selectDomain" value="{!! $domain->id !!}" />
     			</div>
     			
     		</div>

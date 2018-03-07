@@ -24,7 +24,11 @@ class BuilderController extends Controller
     function page($page = 'index')
     {
         $lPage = \App\LPage::whereHas('l_domain',function($q){
-                return $q->where('name',request()->getHttpHost());
+                return $q
+                    ->where('name',request()->getHttpHost())
+                    ->orWhereHas('l_aliases',function($q) {
+                        return $q->where('name',request()->getHttpHost());
+                    });
             })
             ->where('name',$page)
             ->firstOrFail();
@@ -43,7 +47,33 @@ class BuilderController extends Controller
     {
         $sections = \App\TSection::all();
         $l_domains = \Auth::user()->l_domains;
-        return view('builder',['sections' => $sections,'domains' => $l_domains]);
+
+        if(count($l_domains) > 0)
+        {
+            return view('builder',['sections' => $sections,'domains' => $l_domains]);
+        }
+
+        return redirect()->to('home');
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show ($id = 0)
+    {
+        $sections = \App\TSection::all();
+
+        $l_domain = \Auth::user()->l_domains()->find($id);
+
+        if($l_domain)
+        {
+            return view('builder',['sections' => $sections,'domain' => $l_domain]);
+        }
+
+        $l_domain = \Auth::user()->l_domains()->firstOrFail();
+
+        return redirect()->route('builder.show',['id' => $l_domain->id]);
     }
 
     /**

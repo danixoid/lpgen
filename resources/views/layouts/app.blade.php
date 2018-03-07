@@ -57,8 +57,11 @@
 
 <body data-spy="scroll" data-target="#main-navbar">
 
-
-@if(preg_match('/(builder|home)/',request()->fullUrl()))
+<?php
+    $_show_nav = preg_match('/!?(builder|page)/',request()->route()->getName()) === 0 &&
+        preg_match('/^'. env('LPGEN_KZ','b-apps.kz') . '$/',request()->getHost()) > 0;
+?>
+@if($_show_nav)
     <!-- =========================
             HEADER
         ============================== -->
@@ -103,6 +106,8 @@
                             <li class="inverse smooth-scroll"><a href="{{ route('login') }}">Войти</a></li>
                             <li class="inverse smooth-scroll"><a href="{{ route('register') }}">Регистрация</a></li>
                         @else
+                            <li class="inverse smooth-scroll"><a href="{{ route('home') }}">Кабинет</a></li>
+                            {{--<li class="inverse smooth-scroll"><a href="{{ route('builder.show') }}">Строитель</a></li>--}}
                             <li class="dropdown">
                                 <a href="{{ route('logout') }}" class="dropdown-toggle btn-nav btn-green smooth-scroll"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -124,7 +129,34 @@
 @endif
     <div class="main-container" id="page">@yield('content')</div><!-- /End Main Container -->
 
+@if($_show_nav)
 
+
+    <!-- =========================
+             FOOTER
+        ============================== -->
+    <footer id="footer1-2" class="p-y-md footer f1 bg-edit bg-dark">
+        <div class="container">
+            <div class="row">
+                <!-- Copy -->
+                <div class="col-sm-8 text-white">
+                    <p>© {{ date('Y') }} Разработано в <a href="http://bapps.kz" class="f-w-900 inverse">B-Apps</a></p>
+                </div>
+                <!-- Social Links -->
+                <div class="col-sm-4">
+                    <ul class="footer-social inverse">
+                        {{--<li><a href=""><i class="fa fa-facebook"></i></a></li>--}}
+                        {{--<li><a href=""><i class="fa fa-twitter"></i></a></li>--}}
+                        {{--<li><a href=""><i class="fa fa-instagram"></i></a></li>--}}
+                    </ul>
+                </div>
+            </div><!-- /End Row -->
+        </div><!-- /End Container -->
+    </footer>
+
+
+
+@endif
 <!-- =========================
      SCRIPTS
 ============================== -->

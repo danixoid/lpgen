@@ -73,7 +73,11 @@ class BuilderController extends Controller
 
         $l_domain = \Auth::user()->l_domains()->firstOrFail();
 
-        return redirect()->route('builder.show',['id' => $l_domain->id]);
+        if($l_domain) {
+            return redirect()->route('builder.show', ['id' => $l_domain->id]);
+        }
+
+        return redirect()->route('domain.index');
     }
 
     /**

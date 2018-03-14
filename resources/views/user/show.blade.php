@@ -32,7 +32,7 @@
                         <strong>Поддомен</strong>: <a target="_blank" href="http://{!! $domain->name !!}/">http://{!! $domain->name !!}/</a><br />
                         <strong>Алиасы</strong>:
                             @foreach($domain->l_aliases as $alias)
-                                <a target="_blank" href="http://{!! $domain->name !!}/">{!! $alias->name !!}</a><br />
+                                <a target="_blank" href="http://{!! $domain->name !!}.{!! env('LPGEN_KZ','b-apps.kz') !!}/">{!! $alias->name !!}.{!! env('LPGEN_KZ','b-apps.kz') !!}</a><br />
                             @endforeach
                         @endforeach
                     </div>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -26,24 +27,29 @@ class UserController extends Controller
     public function index()
     {
         $count = request('count') ?: 10;
+        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
 
-        if(request('q')) {
-            $users = \App\User::where('id','<>',\Auth::user()->id)
-                ->where(function($q) {
-                    return $q
-                        ->where('name','LIKE', '%' . request('q'). '%')
-                        ->orWhere('email','LIKE', '%' . request('q'). '%')
-                        ->orWhere('name','LIKE', '%' . request('q'). '%');
+        $users = \App\User::where(function($q) use ($is_admin) {
+                    if(request()->ajax()) $q = $q->where('id','<>',\Auth::user()->id);
+                    else if(!$is_admin) $q = $q->where('id','=',\Auth::user()->id);
+                    return $q;
                 })
-                ->orderBy('created_at','desc')
-                ->paginate($count);
+            ->where(function($q) {
 
-            if(request()->ajax()) {
-                return $users->toJson();
-            }
+                if(request('q')) {
+                    return $q
+                        ->where('name', 'LIKE', '%' . request('q') . '%')
+                        ->orWhere('email', 'LIKE', '%' . request('q') . '%')
+                        ->orWhere('name', 'LIKE', '%' . request('q') . '%');
+                }
 
-        } else {
-            $users = \App\User::paginate($count);
+                return $q;
+            })
+            ->orderBy('created_at','desc')
+            ->paginate($count);
+
+        if(request()->ajax()) {
+            return $users->toJson();
         }
 
         return view('user.index',['users' => $users->appends(Input::except('page'))]);
@@ -78,12 +84,20 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
+
+        if(!$is_admin && $id != \Auth::user()->id)
+        {
+            return redirect()->route('user.show', \Auth::user()->id);
+        }
+
+        $user = \App\User::find($id);
+
         if(request()->ajax()) {
             return response()
                 ->json(\App\User::find($id));
         }
 
-        $user = \App\User::find($id);
         return view('user.show',['user' => $user]);
     }
 
@@ -95,6 +109,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
+
+        if(!$is_admin && $id != \Auth::user()->id)
+        {
+            return redirect()->route('user.edit', \Auth::user()->id);
+        }
+
         $user = \App\User::find($id);
 
         return view('user.edit',['user' => $user]);
@@ -109,6 +130,13 @@ class UserController extends Controller
      */
     public function update(UserEditRequest $request, $id)
     {
+        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
+
+        if(!$is_admin && $id != \Auth::user()->id)
+        {
+            return redirect()->back();
+        }
+
         $data = $request->all();
 
         if(isset($data['password'])) {
@@ -146,6 +174,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
+
+        if(!$is_admin || $id == \Auth::user()->id)
+        {
+            return redirect()->back();
+        }
+
         $user = \App\User::find($id);
 
         if(!$user) {

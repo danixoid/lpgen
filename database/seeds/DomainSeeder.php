@@ -13,8 +13,11 @@ class DomainSeeder extends Seeder
     {
         $user = \App\User::firstOrFail();
         $domain = \App\LDomain::create([
-            'name' => env('LPGEN_KZ','www.b-apps.kz'),
+            'name' => 'www',
             'user_id' => $user->id
+        ]);
+        $domain->l_aliases()->create([
+            'name' => env('LPGEN_KZ','b-apps.kz')
         ]);
     }
 }

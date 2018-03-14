@@ -139,12 +139,6 @@ function loadPagesByDomain(domain_id) {
         type: formMethod,
     }).done(function (pages) {
 
-        if(pages.length > 0) {
-            $('#start').hide();
-        } else {
-            $('#start').show();
-        }
-
         $('#pageList ul#page1').empty();
 
         $('#pageList ul.generate-ul').remove();
@@ -173,6 +167,8 @@ function loadPagesByDomain(domain_id) {
 
 
             for (var y = 0; y < pages[x].l_blocks.length; y++) {
+
+                $('#start').hide();
 
                 if (pages[x].l_blocks[y] != null) {
 

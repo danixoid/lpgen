@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <a href="{!! route('home') !!}" id="profile" class="btn btn-warning btn-embossed actionButtons"><span class="fui-user"></span> {{ Auth::user()->name }}</a>
+                    <a href="{!! route('home') !!}" id="profile" class="btn btn-warning btn-embossed"><span class="fui-user"></span> {{ Auth::user()->name }}</a>
 
                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>

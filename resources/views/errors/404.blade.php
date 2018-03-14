@@ -1,47 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Страница не найдена.</title>
+@extends('layouts.app')
 
-        <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet" type="text/css">
+@section('content')
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+    <section class="p-y-lg bg-green bg-edit">
+        <div class="overlay"></div>
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 100;
-                font-family: 'Jura', sans-serif;
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 72px;
-                margin-bottom: 40px;
-            }
-        </style>
-    </head>
-    <body>
         <div class="container">
-            <div class="content">
-                <div class="title">404 - страница не найдена.</div>
+            <!-- Section Header -->
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="section-header text-white text-center wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
+                        <h2>404 &mdash; эта страница еще не создана</h2>
+                        <p class="lead"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <a href="{!! route('domain.create') !!}" class="btn btn-shadow btn-blue btn-block">СОЗДАТЬ СТРАНИЦУ {!! mb_strtoupper(request()->getHttpHost()) !!}</a>
+                    <p class="small text-center"><a href="{{ route('home') }}" class="inverse">На главную</a></p>
+                </div>
             </div>
         </div>
-    </body>
-</html>
+    </section>
+@endsection

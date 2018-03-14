@@ -10,6 +10,37 @@ class LDomain extends Model
     {
         parent::boot();
 
+        static::created(
+            function($domain)
+            {
+                $page = \App\LPage::create([
+                    'l_domain_id' => $domain->id,
+                    'name' => 'index',
+                    'content' => "<section class=\"p-y-lg bg-green bg-edit\">
+        <div class=\"overlay\"></div>
+
+        <div class=\"container\">
+            <!-- Section Header -->
+            <div class=\"row\">
+                <div class=\"col-md-8 col-md-offset-2\">
+                    <div class=\"section-header text-white text-center wow fadeIn\" style=\"visibility: visible; animation-name: fadeIn;\">
+                        <h2>Cтраница создана, но не исправлена</h2>
+                        <p class=\"lead\"></p>
+                    </div>
+                </div>
+            </div>
+            <div class=\"row\">
+                <div class=\"col-md-4 col-md-offset-4\">
+                    <a href=\"" . route('builder.show',$domain->id) . "\" class=\"btn btn-shadow btn-blue btn-block\">ПРАВИТЬ СТРАНИЦУ "
+                        . mb_strtoupper($domain->name . "." . env('LPGEN_KZ','b-apps.kz')) ."</a>
+                    <p class=\"small text-center\"><a href=\"" . route('home') . "\" class=\"inverse\">На главную</a></p>
+                </div>
+            </div>
+        </div>
+    </section>"
+                ]);
+            }
+        );
         static::deleting(
             function($domain)
             {

@@ -66,7 +66,14 @@ class BuilderController extends Controller
     {
         $sections = \App\TSection::all();
 
-        $l_domain = \Auth::user()->l_domains()->find($id);
+        $l_domain = \App\LDomain::where(function($q) {
+                return $q->whereHas('users', function ($q) {
+                    return $q->where('user_id', \Auth::user()->id);
+                })
+                ->orWhere('user_id',\Auth::user()->id);
+            })
+            ->where('id',$id)
+            ->first();
 
         if($l_domain)
         {

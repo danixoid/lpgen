@@ -16,6 +16,7 @@ class LDomain extends Model
                 foreach($domain->l_pages as $page){ $page->delete(); };
                 $domain->l_metas()->delete();
                 $domain->l_aliases()->delete();
+                $domain->users()->detach();
             }
         );
     }

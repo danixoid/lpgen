@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\LDomain::class);
     }
+
+    public function m_domains()
+    {
+        return $this->belongsToMany(\App\LDomain::class,'l_domain_users','l_domain_id');
+    }
 }

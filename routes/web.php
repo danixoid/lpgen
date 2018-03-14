@@ -19,14 +19,18 @@ Route::get('/_token', function() {
     return response()->json([ '_token' => csrf_token() ]);
 })->name('_token');
 
-Route::group(['domain' => env('LPGEN_KZ','www.b-apps.kz')], function () {
+Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
 
     //
     Route::get('/home', 'HomeController@index')->name('home');
 
+    Route::get('/upgrade/domain', 'HomeController@upgrade_domain')->name('upgrade.domain');
+
 
     // Управление доменом
     Route::resource('domain', 'DomainController');
+    Route::resource('access', 'DomainAccessController');
+    Route::resource('user', 'UserController');
 
     // Блок-шаблон
     Route::get('/skeleton', 'BuilderController@skeleton')->name('builder.skeleton');

@@ -25,7 +25,9 @@ class BuilderController extends Controller
     {
         $lPage = \App\LPage::whereHas('l_domain',function($q){
                 return $q
-                    ->where('name',request()->getHttpHost())
+                    ->where('name',preg_replace("/\."
+                        . env('LPGEN_KZ','b-apps.kz')
+                        . "$/","",request()->getHttpHost()))
                     ->orWhereHas('l_aliases',function($q) {
                         return $q->where('name',request()->getHttpHost());
                     });
@@ -182,7 +184,7 @@ class BuilderController extends Controller
                 ]);
         };
 
-        return redirect()->away('http://'.$domain->name);
+        return redirect()->away('http://'.$domain->name . "." . env('LPGEN_KZ','b-apps.kz'));
     }
 
     /**

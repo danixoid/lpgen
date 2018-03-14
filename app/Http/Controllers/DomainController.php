@@ -23,7 +23,11 @@ class DomainController extends Controller
      */
     public function index()
     {
-        $domains = \Auth::user()->l_domains;
+        $domains = \App\LDomain::where('user_id',\Auth::user()->id)
+            ->orWhereHas('users',function($q) {
+                    return $q->where('user_id',\Auth::user()->id);
+                })
+            ->get();
         return view('domain.index',['domains' => $domains]);
     }
 
@@ -47,7 +51,7 @@ class DomainController extends Controller
     {
 //        dd($request->all());
         $domain = \App\LDomain::updateOrCreate([
-            'name' => $request->name . "." . env('LPGEN_KZ','b-apps.kz'),
+            'name' => $request->name,
             'user_id' => \Auth::user()->id
         ]);
 

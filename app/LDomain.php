@@ -36,4 +36,9 @@ class LDomain extends Model
     {
         return $this->hasMany(\App\LAlias::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(\App\User::class,'l_domain_users');
+    }
 }

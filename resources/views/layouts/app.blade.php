@@ -106,7 +106,8 @@
                             <li class="inverse smooth-scroll"><a href="{{ route('login') }}">Войти</a></li>
                             <li class="inverse smooth-scroll"><a href="{{ route('register') }}">Регистрация</a></li>
                         @else
-                            <li class="inverse smooth-scroll"><a href="{{ route('home') }}">Кабинет</a></li>
+                            <li class="inverse smooth-scroll"><a href="{{ route('home') }}">Сайты</a></li>
+                            <li class="inverse smooth-scroll"><a href="{{ route('user.index') }}">Кабинет</a></li>
                             {{--<li class="inverse smooth-scroll"><a href="{{ route('builder.show') }}">Строитель</a></li>--}}
                             <li class="dropdown">
                                 <a href="{{ route('logout') }}" class="dropdown-toggle btn-nav btn-green smooth-scroll"

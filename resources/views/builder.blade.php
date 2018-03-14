@@ -129,7 +129,7 @@
                         <li><a href="#exportModal" id="exportPage" data-toggle="modal" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
                         {{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
 
-                        <li><a href="#" onclick="window.open('/builder/preview/' + $('select#selectDomain').val() + '/'
+                        <li><a href="#" onclick="window.open('/builder/preview/' + $('#selectDomain').val() + '/'
                             + $('#pageTitle span span').text(),'_blank');"  id="preview"
                                class="btn-embossed disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a></li>
 
@@ -205,7 +205,7 @@
     			</div>
     			
     			<div class="title" id="pageTitle">
-					<span>http://{!! $domain->name !!}{{--<select id="selectDomain">
+					<span>http://{!! $domain->name . "." . env('LPGEN_KZ','b-apps.kz') !!}{{--<select id="selectDomain">
 					@foreach($domains as $domain)
 						<option value="{!! $domain->id !!}">{!! $domain->name !!}</option>
 					@endforeach

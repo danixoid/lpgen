@@ -28,7 +28,7 @@ class HomeController extends Controller
                     . env('LPGEN_KZ','b-apps.kz')
                     . "$/",$domain->name)) {
                     $domain->name = "www";//preg_replace("/\./","",$domain->name);
-                    $domain->l_aliases()->createOrFail([
+                    $domain->l_aliases()->create([
                         'name' => env('LPGEN_KZ','b-apps.kz'),
                         'l_domain_id' => $domain->id
                     ]);

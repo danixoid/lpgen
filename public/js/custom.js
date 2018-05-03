@@ -555,10 +555,11 @@ $("#subscribeForm2").on('submit', function(e) {
     e.preventDefault();
     var data = {
         name: $("#sf2Name").val(),
-        email: $("#sf2Email").val()
+        email: $("#sf2Email").val(),
+        phone: $("#sf2Phone").val()
     };
         
-    if ( isValidEmail(data['email']) && (data['name'].length > 1) ) {
+    if ( data['phone'].length > 5 && isValidEmail(data['email']) && (data['name'].length > 1) ) {
         $.ajax({
             type: "POST",
             url: "php/subscribe2.php",

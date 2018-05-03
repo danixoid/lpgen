@@ -433,7 +433,9 @@ function makeSortable(el) {
 
                 if (ui.item.find('iframe').size() > 0) {//iframe thumbnails
 
-                    theHeight = ui.item.height();
+                    var theHeight = ui.item.height();
+
+                    if(theHeight < 50) theHeight = 100;
 
                     var attr = ui.item.find('iframe').attr('data-sandbox');
 
@@ -465,8 +467,8 @@ function makeSortable(el) {
 
                 } else {//image thumbnails
 
-                    theHeight = ui.item.find('img').attr('data-height');
-
+                    var theHeight = ui.item.find('img').attr('data-height');
+                    if(theHeight < 50) theHeight = 100;
                     //is this iframe to be sandboxed?
 
                     var attr = ui.item.find('img').attr('data-sandbox');

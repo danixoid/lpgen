@@ -247,7 +247,7 @@ function loadPagesByDomain(domain_id) {
 
 
 
-var hexDigits = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+var hexDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
 
 //Function to convert hex format to a rgb color
 function rgb2hex(rgb) {
@@ -428,16 +428,18 @@ function makeSortable(el) {
         handle: ".frameCover",
         beforeStop: function (event, ui) {
 
+            var theHeight = 100;
+            var attr = '';
 
             if (ui.item.find('.frameCover').size() == 0) {
 
                 if (ui.item.find('iframe').size() > 0) {//iframe thumbnails
 
-                    var theHeight = ui.item.height();
+                    theHeight = ui.item.height();
 
                     if(theHeight < 50) theHeight = 100;
 
-                    var attr = ui.item.find('iframe').attr('data-sandbox');
+                    attr = ui.item.find('iframe').attr('data-sandbox');
 
                     if (typeof attr !== typeof undefined && attr !== false) {
 
@@ -467,11 +469,11 @@ function makeSortable(el) {
 
                 } else {//image thumbnails
 
-                    var theHeight = ui.item.find('img').attr('data-height');
+                    theHeight = ui.item.find('img').attr('data-height');
                     if(theHeight < 50) theHeight = 100;
                     //is this iframe to be sandboxed?
 
-                    var attr = ui.item.find('img').attr('data-sandbox');
+                    attr = ui.item.find('img').attr('data-sandbox');
 
                     if (typeof attr !== typeof undefined && attr !== false) {
 
@@ -571,7 +573,7 @@ function buildeStyleElements(el, theSelector) {
 
         //alert( $(el).get(0).tagName )
 
-        newStyleEl = $('#styleElTemplate').clone();
+        var newStyleEl = $('#styleElTemplate').clone();
 
         newStyleEl.attr('id', '');
         newStyleEl.find('.control-label').text(editableItems[theSelector][x] + ":");
@@ -582,12 +584,12 @@ function buildeStyleElements(el, theSelector) {
 
             newStyleEl.find('input').remove();
 
-            newDropDown = $('<select></select>');
+            var newDropDown = $('<select></select>');
             newDropDown.attr('name', editableItems[theSelector][x]);
 
             for (z = 0; z < editableItemOptions[ theSelector + " : " + editableItems[theSelector][x] ].length; z++) {
 
-                newOption = $('<option value="' + editableItemOptions[theSelector + " : " + editableItems[theSelector][x]][z] + '">' + editableItemOptions[theSelector + " : " + editableItems[theSelector][x]][z] + '</option>');
+                var newOption = $('<option value="' + editableItemOptions[theSelector + " : " + editableItems[theSelector][x]][z] + '">' + editableItemOptions[theSelector + " : " + editableItems[theSelector][x]][z] + '</option>');
 
 
                 if (editableItemOptions[theSelector + " : " + editableItems[theSelector][x]][z] == $(el).css(editableItems[theSelector][x])) {
@@ -658,11 +660,11 @@ function buildeStyleElements(el, theSelector) {
 
 function getParentFrameID(el) {
 
-    theID = '';
+    var theID = '';
 
     $('#pageList li:visible iframe').each(function () {
 
-        theBody = $(this).contents().find('body');
+        var theBody = $(this).contents().find('body');
 
         if ($.contains(document.getElementById($(this).attr('id')).contentWindow.document, el)) {
 
@@ -683,17 +685,19 @@ function getParentFrameID(el) {
 
 function heightAdjustment(el, par) {
 
+    var theFrame;
+
     par = typeof par !== 'undefined' ? par : false;
 
     if (par == false) {
 
         $('#pageList li:visible iframe').each(function () {
 
-            theBody = $(this).contents().find('body');
+            var theBody = $(this).contents().find('body');
 
             if ($.contains(document.getElementById($(this).attr('id')).contentWindow.document, el)) {
 
-                frameID = $(this).attr('id');
+                var frameID = $(this).attr('id');
 
             }
 
@@ -740,7 +744,7 @@ function hasSandbox(el) {
 }
 
 
-var _oldIcon = new Array();
+var _oldIcon = [];
 
 
 function styleClick(el) {
@@ -764,6 +768,8 @@ function styleClick(el) {
     //is the element an ancor tag?
     if ($(el).prop('tagName') == 'A' || $(el).parent().prop('tagName') == 'A') {
 
+        var theHref;
+
         $('a#link_Link').parent().show();
 
         if ($(el).prop('tagName') == 'A') {
@@ -776,9 +782,9 @@ function styleClick(el) {
 
         }
 
-        zIndex = 0;
+        var zIndex = 0;
 
-        pageLink = false;
+        var pageLink = false;
 
         //the actual select
 
@@ -1037,6 +1043,9 @@ function styleClick(el) {
 
     //save button
     $('button#saveStyling').unbind('click').bind('click', function () {
+
+        var sandboxID;
+        var elementID;
 
         $('#styleEditor #tab1 .form-group:not(#styleElTemplate) input, #styleEditor #tab1 .form-group:not(#styleElTemplate) select').each(function () {
 
@@ -1359,6 +1368,9 @@ function styleClick(el) {
     //delete button
     $('button#removeElementButton').unbind('click').bind('click', function () {
 
+        var toDel;
+        var randomEl;
+
         if ($(el).prop('tagName') == 'A') {//ancor
 
             if ($(el).parent().prop('tagName') == 'LI') {//clone the LI
@@ -1418,6 +1430,11 @@ function styleClick(el) {
 
     //clone button
     $('button#cloneElementButton').unbind('click').bind('click', function () {
+
+        var theClone;
+        var theOne;
+        var cloned;
+        var cloneParent;
 
         if ($(el).parent().hasClass('propClone')) {//clone the parent element
 
@@ -1637,6 +1654,8 @@ function closeStyleEditor() {
 
 
 $(function () {
+
+    var _mode;
 
     //video ID toggle
 
@@ -2063,6 +2082,8 @@ $(function () {
 
     $('button#updateContentInFrameSubmit').click(function () {
 
+        var sandboxID;
+
         //alert( elToUpdate.text() )
 
         elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
@@ -2162,7 +2183,7 @@ $(function () {
 
         $('#resetBlock').modal('show');
 
-        frameToReset = $(this).closest('li').find('iframe');
+        var frameToReset = $(this).closest('li').find('iframe');
 
         $('#resetBlock').off('click', '#resetBlockConfirm').on('click', '#resetBlockConfirm', function () {
 
@@ -2188,7 +2209,7 @@ $(function () {
     });
 
 
-    var aceEditors = new Array();//store all ace editors
+    var aceEditors = [];//store all ace editors
 
 
     //block source code
@@ -2203,7 +2224,7 @@ $(function () {
 
 
         //built editor element
-        theEditor = $('<div class="aceEditor"></div>');
+        var theEditor = $('<div class="aceEditor"></div>');
         theEditor.uniqueId();
 
         //set the editor height
@@ -2216,7 +2237,7 @@ $(function () {
 
         $(this).closest('li').append(theEditor);
 
-        theId = theEditor.attr('id');
+        var theId = theEditor.attr('id');
 
         var editor = ace.edit(theId);
 
@@ -2243,10 +2264,10 @@ $(function () {
 
         //buttons
 
-        cancelButton = $('<button type="button" class="btn btn-danger editCancelButton btn-wide"><span class="fui-cross"></span> Отмена</button>');
-        saveButton = $('<button type="button" class="btn btn-primary editSaveButton btn-wide"><span class="fui-check"></span> Сохранить</button>');
+        var cancelButton = $('<button type="button" class="btn btn-danger editCancelButton btn-wide"><span class="fui-cross"></span> Отмена</button>');
+        var saveButton = $('<button type="button" class="btn btn-primary editSaveButton btn-wide"><span class="fui-check"></span> Сохранить</button>');
 
-        buttonWrapper = $('<div class="editorButtons"></div>');
+        var buttonWrapper = $('<div class="editorButtons"></div>');
         buttonWrapper.append(cancelButton);
         buttonWrapper.append(saveButton);
 
@@ -2285,11 +2306,11 @@ $(function () {
         $(this).closest('li').parent().sortable('enable');
 
 
-        theId = $(this).closest('.editorButtons').prev().attr('id');
+        var theId = $(this).closest('.editorButtons').prev().attr('id');
 
-        theContent = aceEditors[theId].getValue();
+        var theContent = aceEditors[theId].getValue();
 
-        theiFrame = $(this).closest('li').find('iframe');
+        var theiFrame = $(this).closest('li').find('iframe');
 
 
         $(this).parent().prev().remove();
@@ -2366,6 +2387,9 @@ $(function () {
 
     $('#previewModal').on('shown.bs.modal', function (e) {
 
+        var newDocMainParent;
+        var theContents;
+
         $('#previewModal form input[type="hidden"]').remove();
 
         //grab visible page
@@ -2424,7 +2448,7 @@ $(function () {
                     });
 
                 }
-                for (i = 0; i < editableContent.length; ++i) {
+                for (var i = 0; i < editableContent.length; ++i) {
 
                     $(this).contents().find(editableContent[i]).each(function () {
 
@@ -2435,15 +2459,15 @@ $(function () {
                 }
 
 
-                toAdd = theContents.html();
+                var toAdd = theContents.html();
 
                 //grab scripts
 
-                scripts = $(this).contents().find(pageContainer).find('script');
+                var scripts = $(this).contents().find(pageContainer).find('script');
 
                 if (scripts.size() > 0) {
 
-                    theIframe = document.getElementById("skeleton");
+                    var theIframe = document.getElementById("skeleton");
 
                     scripts.each(function () {
 
@@ -2473,7 +2497,7 @@ $(function () {
 
             });
 
-            newInput = $('<input type="hidden" name="page" value="">');
+            var newInput = $('<input type="hidden" name="page" value="">');
 
             $('#previewModal form').prepend(newInput);
 
@@ -2538,7 +2562,9 @@ $(function () {
 
             //grab the skeleton markup
 
-            newDocMainParent = $('iframe#skeleton').contents().find(pageContainer);
+            var toAdd;
+            var theContents;
+            var newDocMainParent = $('iframe#skeleton').contents().find(pageContainer);
 
             //empty out the skeleton
             newDocMainParent.find('*').remove();
@@ -2592,7 +2618,7 @@ $(function () {
 
                 }
                 //rm1
-                for (i = 0; i < editableContent.length; ++i) {
+                for (var i = 0; i < editableContent.length; ++i) {
 
                     $(this).contents().find(editableContent[i]).each(function () {
 
@@ -2607,11 +2633,11 @@ $(function () {
 
                 //grab scripts
 
-                scripts = $(this).contents().find(pageContainer).find('script');
+                var scripts = $(this).contents().find(pageContainer).find('script');
 
                 if (scripts.size() > 0) {
 
-                    theIframe = document.getElementById("skeleton");
+                    var theIframe = document.getElementById("skeleton");
 
                     scripts.each(function () {
 
@@ -2643,7 +2669,7 @@ $(function () {
 
 
 
-            newInput = $('<input type="hidden" name="pages[' + $('#pages li:eq(' + ($(this).index() + 1) + ') a:first').text() + ']" value="">');
+            var newInput = $('<input type="hidden" name="pages[' + $('#pages li:eq(' + ($(this).index() + 1) + ') a:first').text() + ']" value="">');
 
             $('#exportModal form').prepend(newInput);
 
@@ -2779,7 +2805,7 @@ $(function () {
 
         //create the page structure
 
-        newPageList = $('<ul></ul>');
+        var newPageList = $('<ul></ul>');
         newPageList.css('display', 'block');
         newPageList.attr('id', 'page' + ($('#pages li').size() - 1));
 
@@ -2802,7 +2828,7 @@ $(function () {
 
         //add page to page dropdown
 
-        newItem = $('<option value="' + 'page' + ($('#pages li').size() - 1) + '.html">' + 'page' + ($('#pages li').size() - 1) + '</option>')
+        var newItem = $('<option value="' + 'page' + ($('#pages li').size() - 1) + '.html">' + 'page' + ($('#pages li').size() - 1) + '</option>')
 
         $('#internalLinksDropdown').append(newItem);
 
@@ -2838,11 +2864,11 @@ $(function () {
 
         //do something
 
-        theLI = $(this).closest('li');
+        var theLI = $(this).closest('li');
 
         if (theLI.find('input').size() > 0) {
 
-            theLink = $('<a href="#' + theLI.find('input').val() + '">' + theLI.find('input').val() + '</a>');
+            var theLink = $('<a href="#' + theLI.find('input').val() + '">' + theLI.find('input').val() + '</a>');
 
             theLI.find('input').remove();
 
@@ -2860,9 +2886,9 @@ $(function () {
     $('#pages').on('click', 'li.active .fileEdit', function () {
 
 
-        theLI = $(this).closest('li');
+        var theLI = $(this).closest('li');
 
-        newInput = $('<input type="text" value="' + theLI.find('a:first').text() + '" name="page">');
+        var newInput = $('<input type="text" value="' + theLI.find('a:first').text() + '" name="page">');
 
         theLI.find('a:first').remove();
 
@@ -2963,7 +2989,7 @@ function savePage(e) {
     var blocks = [];
     closeStyleEditor();
 
-    pageCounter = 0;
+    var pageCounter = 0;
 
     //frame stuff
     $('#pageList > ul').each(function () {
@@ -2974,7 +3000,7 @@ function savePage(e) {
             'page' : []
         };
 
-        theName = $(this).attr('id');
+        var theName = $(this).attr('id');
 
         $(this).find('li').each(function () {
             blocks[pageCounter].frame.push($(this).html());
@@ -3044,7 +3070,7 @@ function savePage(e) {
     });
 
     //page names
-    c = 0;
+    var c = 0;
     $('ul#pages li:not(#newPageLI)').each(function (index) {
         blocks[c].page = $(this).find('a').text();
         c++;

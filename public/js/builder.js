@@ -709,9 +709,11 @@ function heightAdjustment(el, par) {
 
     //realHeight = theFrame.contentWindow.document.body.offsetHeight;
 
-    realHeight = theFrame.contentWindow.document.body.offsetHeight;
+    var realHeight = theFrame.contentWindow.document.body.offsetHeight;
 
     //alert(theFrame.contentWindow.document.body.offsetHeight)
+
+    if(realHeight < 50) realHeight = 100;
 
     $(theFrame).height(realHeight + "px");
 

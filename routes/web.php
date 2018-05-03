@@ -27,8 +27,6 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     // AJAX
     Route::post('/post/{type}', 'HomeController@post')->name('post');
 
-    Route::get('/upgrade/domain', 'HomeController@upgrade_domain')->name('upgrade.domain');
-
 
     // Управление доменом
     Route::resource('domain', 'DomainController');
@@ -63,6 +61,9 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     Route::get('/builder/{id?}','BuilderController@show')->name('builder.show');
 
 });
+
+
+Route::get('/upgrade/domain', 'HomeController@upgrade_domain')->name('upgrade.domain');
 
 // Другие страницы
 Route::get('/{page?}', 'BuilderController@page')

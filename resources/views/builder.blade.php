@@ -2272,7 +2272,7 @@
     <script src="{!! url('js/redactor/table.js') !!}"></script>
     <script src="{!! url('js/redactor/bufferButtons.js') !!}"></script>
     <script src="{!! url('js/src-min-noconflict/ace.js') !!}"></script>
-    <script src="{!! url('js/builder.js?ver=2') !!}"></script>
+    <script src="{!! url('js/builder.js?ver=3') !!}"></script>
     <script>
     
     $(function(){

@@ -3050,7 +3050,7 @@ function savePage(e) {
 
             }
             //rm1
-            for (i = 0; i < editableContent.length; ++i) {
+            for (var i = 0; i < editableContent.length; ++i) {
 
                 $(this).contents().find(editableContent[i]).each(function () {
 

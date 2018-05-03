@@ -177,7 +177,7 @@
 @yield('javascript')
 
 <!-- Custom Script -->
-<script src="/elements/js/custom.js"></script>
+<script src="/js/custom.js?ver=2"></script>
 
 </body>
 </html>

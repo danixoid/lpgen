@@ -291,11 +291,11 @@ if( $('.instagram-feed').length ) {
 ============================================================== */
 if( $('.countdown').length ) {
     $(".countdown").jCounter({
-        date: "16 december 2016 9:00:00", // Deadline date
-        timezone: "Europe/London",
+        date: "16 december 2018 9:00:00", // Deadline date
+        timezone: "Asia/Almaty",
         format: "dd:hh:mm:ss",
         twoDigits: 'on',
-        serverDateSource: "php/dateandtime.php",
+        serverDateSource: "post/dateandtime",
         fallback: function() {console.log("Count finished!")}
     });
 }
@@ -350,6 +350,7 @@ $("#contactForm").on('submit', function(e) {
     var data = {
         name: $("#cfName").val(),
         email: $("#cfEmail").val(),
+        phone: $("#cf2Phone").val(),
         subject: $("#cfSubject").val(),
         message: $("#cfMessage").val()
     };
@@ -357,7 +358,7 @@ $("#contactForm").on('submit', function(e) {
     if ( isValidEmail(data['email']) && (data['message'].length > 1) && (data['name'].length > 1) && (data['subject'].length > 1) ) {
         $.ajax({
             type: "POST",
-            url: "php/contact.php",
+            url: "post/contact",
             data: data,
             success: function() {
                 $('.success.cf').delay(500).fadeIn(1000);
@@ -387,7 +388,7 @@ $("#callbackForm").on('submit', function(e) {
     if ( isValidEmail(data['email']) && (data['name'].length > 1) && isValidPhoneNumber(data['phone']) ) {
         $.ajax({
             type: "POST",
-            url: "php/callback.php",
+            url: "post/callback",
             data: data,
             success: function() {
                 $('.success.cb').delay(500).fadeIn(1000);
@@ -428,20 +429,19 @@ $("#ticketForm").on('submit', function(e) {
         ticket: $("#tfTicket").val()
     };
 
-    if ( isValidEmail(data['email']) && (data['name'].length > 1) && (data['ticket'].length > 1) && isValidPhoneNumber(data['phone']) ) {
-        $.ajax({
-            type: "POST",
-            url: "php/ticket.php",
-            data: data,
-            success: function() {
-                $('.success.tf').delay(500).fadeIn(1000);
-                $('.failed.tf').fadeOut(500);
-            }
-        });
-    } else {
-        $('.failed.tf').delay(500).fadeIn(1000);
-        $('.success.tf').fadeOut(500);
-    }
+    $.ajax({
+        type: "POST",
+        url: "post/ticket",
+        data: data,
+        success: function() {
+            $('.success.tf').delay(500).fadeIn(1000);
+            $('.failed.tf').fadeOut(500);
+        },
+        error: function() {
+            $('.failed.tf').delay(500).fadeIn(1000);
+            $('.success.tf').fadeOut(500);
+        }
+    });
 
     return false;
 });
@@ -459,20 +459,19 @@ $("#quoteForm").on('submit', function(e) {
         message: $("#qMessage").val()
     };
 
-    if ( isValidEmail(data['email']) && (data['name'].length > 1) && (data['message'].length > 1) && isValidPhoneNumber(data['phone']) ) {
-        $.ajax({
-            type: "POST",
-            url: "php/quote.php",
-            data: data,
-            success: function() {
-                $('.success.qf').delay(500).fadeIn(1000);
-                $('.failed.qf').fadeOut(500);
-            }
-        });
-    } else {
-        $('.failed.qf').delay(500).fadeIn(1000);
-        $('.success.qf').fadeOut(500);
-    }
+    $.ajax({
+        type: "POST",
+        url: "post/quote",
+        data: data,
+        success: function() {
+            $('.success.qf').delay(500).fadeIn(1000);
+            $('.failed.qf').fadeOut(500);
+        },
+        error: function() {
+            $('.failed.qf').delay(500).fadeIn(1000);
+            $('.success.qf').fadeOut(500);
+        }
+    });
 
     return false;
 });
@@ -501,20 +500,19 @@ $("#dateForm").on('submit', function(e) {
         message: $("#dfMessage").val()
     };
 
-    if ( isValidEmail(data['email']) && (data['name'].length > 1) && (data['date'].length > 1) && (data['message'].length > 1) && isValidPhoneNumber(data['phone']) ) {
-        $.ajax({
-            type: "POST",
-            url: "php/appointment.php",
-            data: data,
-            success: function() {
-                $('.success.df').delay(500).fadeIn(1000);
-                $('.failed.df').fadeOut(500);
-            }
-        });
-    } else {
-        $('.failed.df').delay(500).fadeIn(1000);
-        $('.success.df').fadeOut(500);
-    }
+    $.ajax({
+        type: "POST",
+        url: "post/appointment",
+        data: data,
+        success: function() {
+            $('.success.df').delay(500).fadeIn(1000);
+            $('.failed.df').fadeOut(500);
+        },
+        error: function() {
+            $('.failed.df').delay(500).fadeIn(1000);
+            $('.success.df').fadeOut(500);
+        }
+    });
 
     return false;
 });
@@ -526,23 +524,23 @@ $("#dateForm").on('submit', function(e) {
 $("#subscribeForm").on('submit', function(e) {
     e.preventDefault();
     var data = {
-        email: $("#sfEmail").val()
+        email: $("#sfEmail").val(),
+        phone: $("#sfPhone").val()
     };
         
-    if ( isValidEmail(data['email']) ) {
-        $.ajax({
-            type: "POST",
-            url: "php/subscribe.php",
-            data: data,
-            success: function() {
-                $('.success.sf').delay(500).fadeIn(1000);
-                $('.failed.sf').fadeOut(500);
-            }
-        });
-    } else {
-        $('.failed.sf').delay(500).fadeIn(1000);
-        $('.success.sf').fadeOut(500);
-    }
+    $.ajax({
+        type: "POST",
+        url: "post/subscribe",
+        data: data,
+        success: function() {
+            $('.success.sf').delay(500).fadeIn(1000);
+            $('.failed.sf').fadeOut(500);
+        },
+        error : function() {
+            $('.failed.sf').delay(500).fadeIn(1000);
+            $('.success.sf').fadeOut(500);
+        }
+    });
 
     return false;
 });
@@ -559,20 +557,20 @@ $("#subscribeForm2").on('submit', function(e) {
         phone: $("#sf2Phone").val()
     };
         
-    if ( data['phone'].length > 5 && isValidEmail(data['email']) && (data['name'].length > 1) ) {
-        $.ajax({
-            type: "POST",
-            url: "php/subscribe2.php",
-            data: data,
-            success: function() {
-                $('.success.sf2').delay(500).fadeIn(1000);
-                $('.failed.sf2').fadeOut(500);
-            }
-        });
-    } else {
-        $('.failed.sf2').delay(500).fadeIn(1000);
-        $('.success.sf2').fadeOut(500);
-    }
+    $.ajax({
+        type: "POST",
+        url: "post/subscribe2",
+        data: data,
+        success: function() {
+            $('.success.sf2').delay(500).fadeIn(1000);
+            $('.failed.sf2').fadeOut(500);
+        },
+        error: function() {
+            $('.failed.sf2').delay(500).fadeIn(1000);
+            $('.success.sf2').fadeOut(500);
+        }
+    });
+
 
     return false;
 });

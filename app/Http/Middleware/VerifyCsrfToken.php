@@ -16,5 +16,6 @@ class VerifyCsrfToken extends BaseVerifier
         'builder/save',
         'builder/project',
         'builder/blocks',
+        'post/*',
     ];
 }

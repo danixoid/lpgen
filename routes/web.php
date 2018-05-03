@@ -24,6 +24,9 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     //
     Route::get('/home', 'HomeController@index')->name('home');
 
+    // AJAX
+    Route::post('/post/{type}', 'HomeController@post')->name('post');
+
     Route::get('/upgrade/domain', 'HomeController@upgrade_domain')->name('upgrade.domain');
 
 

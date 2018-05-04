@@ -722,12 +722,12 @@ function heightAdjustment(el, par) {
 
     //alert(theFrame.contentWindow.document.body.offsetHeight)
 
-    // if(realHeight > 0) {
+    if(realHeight > 0) {
         $(theFrame).height(realHeight + "px");
         $(theFrame).parent().height((realHeight) + "px");
         $(theFrame).next().height((realHeight) + "px");
         //$(theFrame).parent().parent().height( (realHeight)+"px" );
-    // }
+    }
 
 }
 

@@ -178,7 +178,7 @@ function loadPagesByDomain(domain_id) {
 
                     toInsert.find('iframe').attr('id', 'ui-id-' + x + y);
                     toInsert.find('.frameCover').show();
-                    toInsert.find('.frameCover').height(40);
+                    toInsert.find('.frameCover').css('height','100%');;
 
                     //sandbox? if so, create the sanboxed frame
                     var attr = toInsert.find('iframe').attr('data-sandbox');
@@ -2012,7 +2012,7 @@ $(function () {
             $('#pageList ul .frameCover').each(function () {
 
                 $(this).show();
-                $(this).height(40);
+                $(this).css('height','100%');
 
             });
 

@@ -154,13 +154,13 @@ function loadPagesByDomain(domain_id) {
 
             if ($('ul#page' + xx).size() == 0) {
 
-                newUL = $('<ul id="page' + xx + '" class="generate-ul"></ul>');
+                var newUL = $('<ul id="page' + xx + '" class="generate-ul"></ul>');
 
                 $('#pageList').append(newUL);
 
                 makeSortable(newUL);
 
-                newItem = $('<option value="/' + pages[x].name + '">' + pages[x].name + '</option>')
+                var newItem = $('<option value="/' + pages[x].name + '">' + pages[x].name + '</option>')
 
                 $('#internalLinksDropdown').append(newItem);
             }
@@ -174,21 +174,22 @@ function loadPagesByDomain(domain_id) {
 
                     //build 'em
 
-                    toInsert = $("<li>" + pages[x].l_blocks[y].frame + "</li>");
+                    var toInsert = $("<li>" + pages[x].l_blocks[y].frame + "</li>");
 
                     toInsert.find('iframe').attr('id', 'ui-id-' + x + y);
                     toInsert.find('.frameCover').show();
+                    toInsert.find('.frameCover').height(40);
 
                     //sandbox? if so, create the sanboxed frame
                     var attr = toInsert.find('iframe').attr('data-sandbox');
 
                     if (typeof attr !== typeof undefined && attr !== false) {
 
-                        theiFrame = toInsert.find('iframe');
+                        var theiFrame = toInsert.find('iframe');
 
-                        theID = theiFrame.attr('data-sandbox');
+                        var theID = theiFrame.attr('data-sandbox');
 
-                        sandboxedFrame = $('<iframe src="' + theiFrame.attr('src') + '" id="' + theID + '" sandbox="allow-same-origin"></iframe>');
+                        var sandboxedFrame = $('<iframe src="' + theiFrame.attr('src') + '" id="' + theID + '" sandbox="allow-same-origin"></iframe>');
 
                         $('#sandboxes').append(sandboxedFrame);
 
@@ -209,7 +210,7 @@ function loadPagesByDomain(domain_id) {
 
                             $('iframe#' + $(this).attr('data-sandbox')).contents().find(pageContainer).html(framesForLater[$(this).attr('id')]);
 
-                            theLoaderFunction = $(this).data('data-loaderfunction');
+                            var theLoaderFunction = $(this).data('data-loaderfunction');
 
                             theiFrame = $(this);
 
@@ -229,7 +230,7 @@ function loadPagesByDomain(domain_id) {
 
             if (xx > 1 && typeof pages[x].name != "undefined") {
 
-                newLI = $('<li class="generate-li"><a class="plink" href="#page' + xx + '">'
+                var newLI = $('<li class="generate-li"><a class="plink" href="#page' + xx + '">'
                     + pages[x].name + '</a><span class="pageButtons"><a class="fileEdit" href="">'
                     + '<span class="fui-new"></span></a><a class="fileDel" href="">'
                     + '<span class="fui-cross"></span></a><a href="#" class="btn btn-xs btn-primary btn-embossed fileSave">'
@@ -428,16 +429,17 @@ function makeSortable(el) {
         handle: ".frameCover",
         beforeStop: function (event, ui) {
 
-            var theHeight = 100;
-            var attr = '';
+            var theHeight;
+            var attr;
+            var loaderFunction_;
+            var theID;
+            var sandboxedFrame;
 
             if (ui.item.find('.frameCover').size() == 0) {
 
                 if (ui.item.find('iframe').size() > 0) {//iframe thumbnails
 
                     theHeight = ui.item.height();
-
-                    if(theHeight < 50) theHeight = 100;
 
                     attr = ui.item.find('iframe').attr('data-sandbox');
 
@@ -470,7 +472,7 @@ function makeSortable(el) {
                 } else {//image thumbnails
 
                     theHeight = ui.item.find('img').attr('data-height');
-                    if(theHeight < 50) theHeight = 100;
+
                     //is this iframe to be sandboxed?
 
                     attr = ui.item.find('img').attr('data-sandbox');
@@ -510,11 +512,11 @@ function makeSortable(el) {
                 }
 
                 //add a delete button
-                delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> Удалить</button>');
-                resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> Сброс</button>');
-                htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> Код</button>');
+                var delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> Удалить</button>');
+                var resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> Сброс</button>');
+                var htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> Код</button>');
 
-                frameCover = $('<div class="frameCover"></div>');
+                var frameCover = $('<div class="frameCover"></div>');
 
                 frameCover.append(delButton);
                 frameCover.append(resetButton);
@@ -567,7 +569,7 @@ function makeSortable(el) {
 
 function buildeStyleElements(el, theSelector) {
 
-    for (x = 0; x < editableItems[theSelector].length; x++) {
+    for (var x = 0; x < editableItems[theSelector].length; x++) {
 
         //create style elements
 
@@ -686,18 +688,21 @@ function getParentFrameID(el) {
 function heightAdjustment(el, par) {
 
     var theFrame;
+    var frameID;
+    var theBody;
 
     par = typeof par !== 'undefined' ? par : false;
 
     if (par == false) {
 
+
         $('#pageList li:visible iframe').each(function () {
 
-            var theBody = $(this).contents().find('body');
+            theBody = $(this).contents().find('body');
 
             if ($.contains(document.getElementById($(this).attr('id')).contentWindow.document, el)) {
 
-                var frameID = $(this).attr('id');
+                frameID = $(this).attr('id');
 
             }
 
@@ -717,13 +722,12 @@ function heightAdjustment(el, par) {
 
     //alert(theFrame.contentWindow.document.body.offsetHeight)
 
-    if(realHeight < 50) realHeight = 100;
-
-    $(theFrame).height(realHeight + "px");
-
-    $(theFrame).parent().height((realHeight) + "px");
-    $(theFrame).next().height((realHeight) + "px");
-    //$(theFrame).parent().parent().height( (realHeight)+"px" );
+    // if(realHeight > 0) {
+        $(theFrame).height(realHeight + "px");
+        $(theFrame).parent().height((realHeight) + "px");
+        $(theFrame).next().height((realHeight) + "px");
+        //$(theFrame).parent().parent().height( (realHeight)+"px" );
+    // }
 
 }
 
@@ -1928,7 +1932,7 @@ $(function () {
             $('#pageList ul li iframe').each(function () {
 
 
-                for (i = 0; i < editableContent.length; ++i) {
+                for (var i = 0; i < editableContent.length; ++i) {
 
                     //remove old events
                     $(this).contents().find(pageContainer + ' ' + editableContent[i]).unbind('click').unbind('hover');
@@ -2008,6 +2012,7 @@ $(function () {
             $('#pageList ul .frameCover').each(function () {
 
                 $(this).show();
+                $(this).height(40);
 
             });
 

@@ -103,14 +103,22 @@
                     <!-- Menu Links -->
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::guest())
-                            <li class="inverse smooth-scroll"><a href="{{ route('login') }}">Войти</a></li>
-                            <li class="inverse smooth-scroll"><a href="{{ route('register') }}">Регистрация</a></li>
+                            <li class="nav-item inverse smooth-scroll"><a class="nav-link" href="{{ route('login') }}">Войти</a></li>
+                            <li class="nav-item inverse smooth-scroll"><a class="nav-link" href="{{ route('register') }}">Регистрация</a></li>
                         @else
-                            <li class="inverse smooth-scroll"><a href="{{ route('home') }}">Сайты</a></li>
-                            <li class="inverse smooth-scroll"><a href="{{ route('user.index') }}">Кабинет</a></li>
+                            <li class="nav-item inverse smooth-scroll"><a class="nav-link" href="{{ route('home') }}">Сайты</a></li>
+                            <li class="nav-item inverse smooth-scroll"><a class="nav-link" href="{{ route('user.index') }}">Кабинет</a></li>
                             {{--<li class="inverse smooth-scroll"><a href="{{ route('builder.show') }}">Строитель</a></li>--}}
-                            <li class="dropdown">
-                                <a href="{{ route('logout') }}" class="dropdown-toggle btn-nav btn-green smooth-scroll"
+                            <li class="nav-item dropdown">
+                                <a class="nav-link inverse dropdown-toggle smooth-scroll" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Блоки</a>
+                                <ul class="dropdown-menu" style="max-height: 500px; overflow-y: auto;">
+                                    @foreach(\App\TSection::all() as $section)
+                                    <li><a class="dropdown-item" href="{!! route('block.index',['section_id' => $section->id ]) !!}">{!! $section->name !!}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="{{ route('logout') }}" class=" btn-nav btn-green smooth-scroll"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ Auth::user()->name }} [ Выйти ]
                                 </a>
@@ -128,6 +136,17 @@
         </nav><!-- /End Navbar -->
     </header>
 @endif
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <div class="main-container" id="page">@yield('content')</div><!-- /End Main Container -->
 
 @if($_show_nav)
@@ -174,6 +193,7 @@
 <script src="/elements/js/plugins/wow.min.js"></script>
 <script src="/elements/js/plugins/picker.js"></script>
 <script src="/elements/js/plugins/picker.date.js"></script>
+
 @yield('javascript')
 
 <!-- Custom Script -->

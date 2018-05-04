@@ -12,10 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'builder/preview',
-        'builder/save',
-        'builder/project',
-        'builder/blocks',
+        'builder/*',
         'post/*',
     ];
 }

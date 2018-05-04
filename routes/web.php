@@ -32,6 +32,7 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     Route::resource('domain', 'DomainController');
     Route::resource('access', 'DomainAccessController');
     Route::resource('user', 'UserController');
+    Route::resource('block','BlockController'); // Редактирование блоков
 
     // Блок-шаблон
     Route::get('/skeleton', 'BuilderController@skeleton')->name('builder.skeleton');

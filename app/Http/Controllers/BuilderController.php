@@ -106,7 +106,7 @@ class BuilderController extends Controller
             $image = $request->file('imageFileField');
             $name = $image->getClientOriginalName();
 
-            Storage::disk('public')->put($uploads_dir . '/' . $name, file_get_contents($image->getRealPath()));
+            Storage::disk('storage')->put($uploads_dir . '/' . $name, file_get_contents($image->getRealPath()));
 
             return array('code' => 1, 'response' => Storage::url($uploads_dir . '/' . $name));
         } 

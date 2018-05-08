@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('meta')
-    @if(isset($metas) && $metas)
-        @foreach($metas as $meta)
-    <meta name="{!! $meta->name !!}" content="{!! $meta->content !!}" />
-        @endforeach
-    @endif
 
     @if(preg_match("/(content|skeleton)/",request()->path()))
 

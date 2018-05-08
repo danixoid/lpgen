@@ -39,7 +39,9 @@ class BuilderController extends Controller
             abort(404);
         }
 
-        return view('content',['content' => $lPage->content]);
+        $metas = $lPage->l_domain->l_metas;
+
+        return view('content',['content' => $lPage->content, 'metas' => $metas]);
     }
 
     /**

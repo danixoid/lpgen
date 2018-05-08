@@ -10,7 +10,17 @@
     @yield("meta")
 
     <!-- TITLE OF SITE -->
+    @if(isset($metas) && $metas)
+        @foreach($metas as $meta)
+            @if(mb_strtolower($meta->name) == 'title')
+            <title>{!! $meta->content !!}</title>
+            @else
+            <meta name="{!! $meta->name !!}" content="{!! $meta->content !!}" />
+            @endif
+        @endforeach
+    @else
     <title>B-Apps - Landing Page with Page Builder</title>
+    @endif
 
     <!-- FAVICON  -->
     <!-- Place your favicon.ico in the images directory -->

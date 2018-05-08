@@ -143,22 +143,25 @@ class BuilderController extends Controller
         $domain = \App\LDomain::findOrFail($request->domain_id);
 
         \App\LMeta::updateOrCreate([
-                'l_domain_id' => $domain->id,
-                'name' => 'title',
-                'content' => $request->title,
-            ],[
-                'l_domain_id' => $domain->id,
-                'name' => 'description',
-                'content' => $request->description,
-            ],[
-                'l_domain_id' => $domain->id,
-                'name' => 'keywords',
-                'content' => $request->keywords,
-            ],[
-                'l_domain_id' => $domain->id,
-                'name' => 'author',
-                'content' => $request->author,
-            ]);
+            'l_domain_id' => $domain->id,
+            'name' => 'title',
+            'content' => $request->title,
+        ]);
+        \App\LMeta::updateOrCreate([
+            'l_domain_id' => $domain->id,
+            'name' => 'description',
+            'content' => $request->description,
+        ]);
+        \App\LMeta::updateOrCreate([
+            'l_domain_id' => $domain->id,
+            'name' => 'keywords',
+            'content' => $request->keywords,
+        ]);
+        \App\LMeta::updateOrCreate([
+            'l_domain_id' => $domain->id,
+            'name' => 'author',
+            'content' => $request->author,
+        ]);
 
 
         foreach($domain->l_pages as $page)

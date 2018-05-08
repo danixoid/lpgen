@@ -142,6 +142,10 @@ $('.mp-iframe').magnificPopup({
     type: 'iframe'
 });
 
+$('.mp-form').magnificPopup({
+    type: 'inline'
+});
+
 
 /* ===========================================================
    FUNFACTS COUNTER

@@ -10,6 +10,9 @@
     @if(preg_match("/(content|skeleton)/",request()->path()))
 
         <style>
+            .mfp-hide {
+                display: block !important;
+            }
             .modal {
                 position: static !important;
                 opacity: 1 !important;
@@ -26,12 +29,9 @@
 @endsection
 
 @section('javascript')
-{{--
-    <script>
+    {{--<script>
         $(function(){
-            --}}{{--alert('{!! request()->path() !!}');--}}{{--
             @if(preg_match("/(content|skeleton)/",request()->path()))
-
 
             @endif
         });

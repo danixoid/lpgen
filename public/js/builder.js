@@ -3,6 +3,7 @@
 var pageContainer = "#page"; //typically no need to change this
 var enablePreview = true; //set to off to disable previews
 
+var theBody;
 var editableItems = new Array();
 
 editableItems['.frameCover'] = [];
@@ -666,7 +667,7 @@ function getParentFrameID(el) {
 
     $('#pageList li:visible iframe').each(function () {
 
-        var theBody = $(this).contents().find('body');
+        theBody = $(this).contents().find('body');
 
         if ($.contains(document.getElementById($(this).attr('id')).contentWindow.document, el)) {
 
@@ -688,8 +689,7 @@ function getParentFrameID(el) {
 function heightAdjustment(el, par) {
 
     var theFrame;
-    var frameID;
-    var theBody;
+    var frameID = el;
 
     par = typeof par !== 'undefined' ? par : false;
 
@@ -708,13 +708,10 @@ function heightAdjustment(el, par) {
 
         });
 
-        theFrame = document.getElementById(frameID);
-
-    } else {
-
-        theFrame = document.getElementById(el)
-
     }
+
+    theFrame = document.getElementById(frameID);
+
 
     //realHeight = theFrame.contentWindow.document.body.offsetHeight;
 

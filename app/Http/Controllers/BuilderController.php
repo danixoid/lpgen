@@ -156,8 +156,6 @@ class BuilderController extends Controller
             if (is_array($type) && isset($type[$key]) && $value != null ) {
                 $l_meta_type = \App\LMetaType::updateOrCreate([
                     'name' => $type[$key]
-                ], [
-                    'content' => $value,
                 ]);
 
                 \App\LMeta::updateOrCreate([

@@ -24,11 +24,12 @@
 @endsection
 
 @section('javascript')
-    {{--<script>
+
+    <script>
         $(function(){
             @if(preg_match("/(content|skeleton)/",request()->path()))
 
             @endif
         });
-    </script>--}}
+    </script>
 @endsection

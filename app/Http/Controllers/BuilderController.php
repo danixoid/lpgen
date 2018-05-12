@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -139,32 +140,48 @@ class BuilderController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function save(Request $request)
     {
         $domain = \App\LDomain::findOrFail($request->domain_id);
 
-        \App\LMeta::updateOrCreate([
-            'l_domain_id' => $domain->id,
-            'name' => 'title',
-            'content' => $request->title,
-        ]);
-        \App\LMeta::updateOrCreate([
-            'l_domain_id' => $domain->id,
-            'name' => 'description',
-            'content' => $request->description,
-        ]);
-        \App\LMeta::updateOrCreate([
-            'l_domain_id' => $domain->id,
-            'name' => 'keywords',
-            'content' => $request->keywords,
-        ]);
-        \App\LMeta::updateOrCreate([
-            'l_domain_id' => $domain->id,
-            'name' => 'author',
-            'content' => $request->author,
-        ]);
 
+        \App\LMeta::where('l_domain_id',$domain->id)->delete();
+
+        foreach($request->get('export') as $key => $value) {
+
+            $type = $request->get('type');
+
+            if (is_array($type) && isset($type[$key]) && $value != null ) {
+                $l_meta_type = \App\LMetaType::updateOrCreate([
+                    'name' => $type[$key]
+                ], [
+                    'content' => $value,
+                ]);
+
+                \App\LMeta::updateOrCreate([
+                    'l_domain_id' => $domain->id,
+                    'l_meta_type_id' => $l_meta_type->id,
+                    'name' => $key,
+                ], [
+                    'content' => $value,
+                ]);
+            }
+        }
+
+        return response('ok',200);
+    }
+
+    /**
+     * @param $domain_id
+     * @param $alias_id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function publish($domain_id,$alias_id)
+    {
+//        dd($request)
+        $domain = \App\LDomain::findOrFail($domain_id);
 
         foreach($domain->l_pages as $page)
         {
@@ -182,21 +199,22 @@ class BuilderController extends Controller
                 };
             }
 
-//            $content = view('content',[
-//                'metas' => $domain->l_metas,
-//                'content' => $content,
-//                '_hide_menu' => true
-//            ]);
-
             \App\LPage::updateOrCreate([
-                    'id'            => $page->id,
-                ],[
-                    'content'       => $content,
-                    'deleted'       => false
-                ]);
+                'id'            => $page->id,
+            ],[
+                'content'       => $content,
+                'deleted'       => false
+            ]);
         };
 
-        return redirect()->away('http://'.$domain->name . "." . env('LPGEN_KZ','b-apps.kz'));
+        $address = 'http://' . $domain->name . '.' . env('LPGEN_KZ','b-apps.kz');
+        $alias = \App\LAlias::find($alias_id);
+
+        if($alias) {
+            $address = 'http://' . $alias->name;
+        }
+
+        return redirect()->away($address);
     }
 
     /**
@@ -241,6 +259,10 @@ class BuilderController extends Controller
         return [ 'result' => true ];    
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function blocks(Request $request)
     {
         $domain = \App\LDomain::findOrFail($request->domain_id);
@@ -249,6 +271,10 @@ class BuilderController extends Controller
         return $pages->toJson();
     }
 
+    /**
+     * @param $name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function content($name)
     {
         $t_block = \App\TBlock::where('name',$name)->firstOrFail();
@@ -259,8 +285,22 @@ class BuilderController extends Controller
         return view('content',['content' => $content]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function skeleton()
     {
         return view('content');
+    }
+
+    /**
+     * @param $domain_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function metas($domain_id)
+    {
+        $metas = \App\LDomain::find($domain_id)->l_metas;
+
+        return response()->json($metas);
     }
 }

@@ -82,10 +82,39 @@ $(window).load(function () {
 
     loadPagesByDomain($("#selectDomain").val());
 
-    $("#selectDomain").on('change',function(ev){;
-        loadPagesByDomain($("#selectDomain").val());
+    // $("#selectDomain").on('change',function(ev){;
+    //     loadPagesByDomain($("#selectDomain").val());
+    // });
+
+    $('#preview').on('click',function() {
+        window.open('/builder/preview/' + $('#selectDomain').val() + '/'
+            + $('#pageTitle span span').text(),'_blank');
     });
 
+    $('#exportPage').on('click',function(ev) {
+
+        $(this).attr('href','/builder/publish/' + $('#selectDomain').val() + '/' + $('#selectAlias').val())
+        // $.ajax({
+        //     url : '/builder/publish',
+        //     data : JSON.stringify({
+        //         'domain_id' : $('#selectDomain').val(),
+        //         'alias_id' : $('#selectAlias').val()
+        //     }),
+        //     type: 'POST',
+        //     // dataType: 'json',
+        // }).done(function (response) {
+        //     window.open(response,'_blank');
+        // }).error(function (response) {
+        //     var mess = '';
+        //
+        //     console.log(response.responseText);
+        //     $.each(JSON.parse(response.responseText), function(index, value) {
+        //         mess += value + "\n";
+        //     });
+        //
+        //     alert(mess);
+        // });
+    });
 
     $('#auth').submit(function(ev){
         var form = $(this);
@@ -2543,151 +2572,76 @@ $(function () {
 
     //export markup
 
-    $('#exportModal').on('show.bs.modal', function (e) {
+    $('#metaModal').on('show.bs.modal', function (e) {
 
-        $('#exportModal > form #exportSubmit').show('');
+        $('#metaModal > form #exportSubmit').show('');
 
-        $('#exportModal > form #exportCancel').text('Отменить и закрыть');
+        $('#metaModal > form #exportCancel').text('Отменить и закрыть');
 
         closeStyleEditor();
 
     });
 
-    $('#exportModal').on('shown.bs.modal', function (e) {
+    $('#metaModal > form').on('submit',function(ev) {
+        ev.preventDefault();
 
-        //delete older hidden fields
+        savePage(ev);
 
-        // $('#exportModal form input[type="hidden"]').remove();
+        var form = $(this);
+        var formAction = form.attr('action');
 
-        //loop through all pages
-        $('#pageList > ul').each(function () {
-
-            //grab the skeleton markup
-
-            var toAdd;
-            var theContents;
-            var newDocMainParent = $('iframe#skeleton').contents().find(pageContainer);
-
-            //empty out the skeleton
-            newDocMainParent.find('*').remove();
-
-            //loop through page iframes and grab the body stuff
-
-            $(this).find('iframe').each(function () {
-
-
-                //sandbox or regular?
-
-                var attr = $(this).attr('data-sandbox');
-
-                if (typeof attr !== typeof undefined && attr !== false) {
-
-                    theContents = $('#sandboxes #' + attr).contents().find(pageContainer);
-
-                } else {
-
-                    theContents = $(this).contents().find(pageContainer);
-
-                }
-
-
-                //remove .frameCovers
-
-                theContents.find('.frameCover').each(function () {
-                    $(this).remove();
-                });
-
-
-                //remove inline styling leftovers
-
-                for (var key in editableItems) {
-
-                    //alert('Key :'+key)
-
-                    theContents.find(key).each(function () {
-
-                        //alert( "Data before: "+ $(this).attr('data-selector') );
-
-                        $(this).removeAttr('data-selector');
-
-                        //alert( "Data after: "+ $(this).attr('data-selector') );
-
-                        if ($(this).attr('style') == '') {
-                            $(this).removeAttr('style')
-                        }
-
-                    });
-
-                }
-                //rm1
-                for (var i = 0; i < editableContent.length; ++i) {
-
-                    $(this).contents().find(editableContent[i]).each(function () {
-
-                        $(this).removeAttr('data-selector');
-
-                    });
-
-                }
-                //rm1
-
-                toAdd = theContents.html();
-
-                //grab scripts
-
-                var scripts = $(this).contents().find(pageContainer).find('script');
-
-                if (scripts.size() > 0) {
-
-                    var theIframe = document.getElementById("skeleton");
-
-                    scripts.each(function () {
-
-                        if ($(this).text() != '') {//script tags with content
-
-                            var script = theIframe.contentWindow.document.createElement("script");
-                            script.type = 'text/javascript';
-                            script.innerHTML = $(this).text();
-
-                            theIframe.contentWindow.document.getElementById(pageContainer.substring(1)).appendChild(script);
-
-                        } else if ($(this).attr('src') != null) {
-
-                            var script = theIframe.contentWindow.document.createElement("script");
-                            script.type = 'text/javascript';
-                            script.src = $(this).attr('src');
-
-                            theIframe.contentWindow.document.getElementById(pageContainer.substring(1)).appendChild(script)
-
-                        }
-
-                    });
-
-                }
-
-                newDocMainParent.append($(toAdd));
-
-            });
-
-
-
-            var newInput = $('<input type="hidden" name="pages[' + $('#pages li:eq(' + ($(this).index() + 1) + ') a:first').text() + ']" value="">');
-
-            $('#exportModal form').prepend(newInput);
-
-            newInput.val("<html>" + $('iframe#skeleton').contents().find('html').html() + "</html>")
-
+        $.ajax({
+            url: formAction,
+            data: form.serializeArray(),
+            type: 'POST',
+        }).done(function (response,status,xhr) {
+            // alert(xhr.status);
+            if (xhr.status == 401) {
+                $('#auth .modal').modal('show');
+            } else {
+                console.log('Metas Saved');
+            }
+        }).fail(function (response,status,xhr) {
+            alert('Ошибка Metas')
         });
 
     });
 
+    $('#metaModal').on('shown.bs.modal', function (e) {
+
+        var newInput = $('<input type="hidden" name="alias_id" value="' + $('#selectAlias').val() + '">');
+
+        $('#metaModal form').prepend(newInput);
+
+        $.ajax({
+            url: '/builder/metas/' + $('#selectDomain').val(),
+            dataType: "json",
+            type: 'GET',
+        }).done(function (response,status,xhr) {
+
+            // alert(xhr.status);
+            if (xhr.status == 401) {
+                $('#auth .modal').modal('show');
+            } else {
+                for(var i = 0; i < response.length; i++) {
+                    console.log($('#export_' + response[i].name).val());
+                    $('#export_' + response[i].name).val(response[i].content);
+
+                }
+            }
+        }).fail(function (response,status,xhr) {
+            // window.location.reload();
+            //$('#auth .modal').modal('show');
+            alert('Ошибка!');
+            $('#metaModal').modal('hide');
+        });
+    });
 
 
-    $('#exportModal > form').submit(function () {
 
-        $('#exportModal > form #exportSubmit').hide('');
+    $('#metaModal > form').submit(function () {
 
-        $('#exportModal > form #exportCancel').text('Закрыть');
+        $('#metaModal').modal('hide');
 
     });
 
@@ -2768,7 +2722,7 @@ $(function () {
 
             if ($(this).find('input').size() > 0) {
 
-                theLink = $('<a href="#">' + $(this).find('input').val() + '</a>');
+                var theLink = $('<a href="#">' + $(this).find('input').val() + '</a>');
 
                 $(this).find('input').remove();
 
@@ -2780,7 +2734,7 @@ $(function () {
 
         $('#pages li').removeClass('active');
 
-        newPageLI = $('#newPageLI').clone();
+        var newPageLI = $('#newPageLI').clone();
         newPageLI.css('display', 'block');
         newPageLI.find('input').val('page' + $('#pages li').size());
         newPageLI.attr('id', '');
@@ -2788,7 +2742,7 @@ $(function () {
         $('ul#pages').append(newPageLI);
 
 
-        theInput = newPageLI.find('input');
+        var theInput = newPageLI.find('input');
 
         theInput.focus();
 
@@ -3004,6 +2958,8 @@ function savePage(e) {
 
         var theName = $(this).attr('id');
 
+        var theContents = "";
+
         $(this).find('li').each(function () {
             blocks[pageCounter].frame.push($(this).html());
         });
@@ -3092,7 +3048,6 @@ function savePage(e) {
         dataType: "json",
         type: 'POST',
     }).done(function (response,status,xhr) {
-
         // alert(xhr.status);
         if (xhr.status == 401) {
             $('#auth .modal').modal('show');

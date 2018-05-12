@@ -49,8 +49,14 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
         ->where('pagename', '(.*)')
         ->name('builder.preview.domain.get');
 
-    // Сохранение страницы
+    // Получение по ИД
+    Route::get('/builder/{id?}','BuilderController@show')->name('builder.show');
+
+    // Сохранение мета данных
     Route::post('/builder/save', 'BuilderController@save')->name('builder.save');
+
+    // Опубликовать страницы
+    Route::get('/builder/publish/{domain_id}/{alias_id?}', 'BuilderController@publish')->name('builder.publish.get');
 
     // Сохранение черновика/проекта
     Route::post('/builder/project', 'BuilderController@project')->name('builder.project');
@@ -58,8 +64,8 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     // Получение блоков
     Route::post('/builder/blocks', 'BuilderController@blocks')->name('builder.blocks');
 
-    // Получение по ИД
-    Route::get('/builder/{id?}','BuilderController@show')->name('builder.show');
+    // Получение метатагов по ИД домена
+    Route::get('/builder/metas/{domain_id}','BuilderController@metas')->name('builder.metas');
 
 });
 

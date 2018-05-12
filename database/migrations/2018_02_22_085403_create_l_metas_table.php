@@ -16,6 +16,7 @@ class CreateLMetasTable extends Migration
         Schema::create('l_metas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('l_domain_id');
+            $table->unsignedInteger('l_meta_type_id');
             $table->string('name');
             $table->text('content')->nullable();
             $table->timestamps();
@@ -23,6 +24,10 @@ class CreateLMetasTable extends Migration
             $table->foreign('l_domain_id')
                 ->references('id')
                 ->on('l_domains');
+
+            $table->foreign('l_meta_type_id')
+                ->references('id')
+                ->on('l_meta_types');
 
             $table->index('name','l_domain_id');
         });

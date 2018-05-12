@@ -12,9 +12,9 @@
     <!-- TITLE OF SITE -->
     @if(isset($metas) && $metas)
         @foreach($metas as $meta)
-            @if(mb_strtolower($meta->name) == 'title')
+            @if(mb_strtolower($meta->l_meta_type->name) == 'title')
             <title>{!! $meta->content !!}</title>
-            @else
+            @elseif(mb_strtolower($meta->l_meta_type->name) == 'meta')
             <meta name="{!! $meta->name !!}" content="{!! $meta->content !!}" />
             @endif
         @endforeach
@@ -203,6 +203,16 @@
 <script src="/elements/js/plugins/wow.min.js"></script>
 <script src="/elements/js/plugins/picker.js"></script>
 <script src="/elements/js/plugins/picker.date.js"></script>
+
+@if(!preg_match("/(content|skeleton)/",request()->path()))
+    @if(isset($metas) && $metas)
+        @foreach($metas as $meta)
+            @if(mb_strtolower($meta->l_meta_type->name) == 'widget')
+                {!! $meta->content !!}
+            @endif
+        @endforeach
+    @endif
+@endif
 
 @yield('javascript')
 

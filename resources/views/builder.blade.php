@@ -125,8 +125,9 @@
                     </button>
 
                     <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a href="http://{!! $domain->name . '.' . env('LPGEN_KZ','b-apps.kz')!!}" target="_blank" id="viewSite" class="btn-embossed disabled actionButtons"><span class="fui-link"></span> Перейти на сайт</a></li>
 
-                        <li><a href="{!! route('builder.publish.get',$domain->id) !!}" target="_blank" id="exportPage" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
+                        <li><a href="#" id="exportPage" class="btn-embossed disabled actionButtons"><span class="fui-export"></span> Опубликовать</a></li>
                         <li><a href="#metaModal" id="setMeta" data-toggle="modal" class="btn-embossed disabled actionButtons"><span class="fui-cmd"></span> Установки</a></li>
                         {{--<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-inverse btn-embossed pull-right disabled actionButtons" style="margin-right: 10px; display: none"><span class="fui-window"></span> Предпросмотр</a>--}}
 
@@ -205,10 +206,10 @@
 
                 <div class="title" id="pageTitle">
                     <span>http://@if($domain->l_aliases()->count() > 0 )<select id="selectAlias">
-                        <option value="0">{!! $domain->name . "." . env('LPGEN_KZ','b-apps.kz') !!}</option>
                         @foreach($domain->l_aliases as $alias)
                             <option value="{!! $alias->id !!}">{!! $alias->name !!}</option>
                         @endforeach
+                        <option value="0">{!! $domain->name . "." . env('LPGEN_KZ','b-apps.kz') !!}</option>
                     </select>@else{!! $domain->name . "." . env('LPGEN_KZ','b-apps.kz') !!}@endif/<span>index</span></span>
 
                     <input type="hidden" id="selectDomain" value="{!! $domain->id !!}" />

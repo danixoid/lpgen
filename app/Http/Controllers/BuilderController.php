@@ -176,10 +176,53 @@ class BuilderController extends Controller
      * @param $alias_id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function publish($domain_id,$alias_id)
+//    public function publish($domain_id,$alias_id)
+//    {
+////        dd($request)
+//        $domain = \App\LDomain::findOrFail($domain_id);
+//
+//        foreach($domain->l_pages as $page)
+//        {
+//            $content = '';
+//
+//            if($page->deleted)
+//            {
+//                $page->delete();
+//            }
+//            else
+//            {
+//                foreach($page->l_blocks as $block)
+//                {
+//                    $content .= $block->element;
+//                };
+//            }
+//
+//            \App\LPage::updateOrCreate([
+//                'id'            => $page->id,
+//            ],[
+//                'content'       => $content,
+//                'deleted'       => false
+//            ]);
+//        };
+//
+//        $address = 'http://' . $domain->name . '.' . env('LPGEN_KZ','b-apps.kz');
+//        $alias = \App\LAlias::find($alias_id);
+//
+//        if($alias) {
+//            $address = 'http://' . $alias->name;
+//        }
+//
+//        return redirect()->away($address);
+//    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function publish(Request $request)
     {
 //        dd($request)
-        $domain = \App\LDomain::findOrFail($domain_id);
+        $domain = \App\LDomain::findOrFail($request->json('domain_id'));
 
         foreach($domain->l_pages as $page)
         {
@@ -206,13 +249,13 @@ class BuilderController extends Controller
         };
 
         $address = 'http://' . $domain->name . '.' . env('LPGEN_KZ','b-apps.kz');
-        $alias = \App\LAlias::find($alias_id);
+        $alias = \App\LAlias::find($request->json('alias_id'));
 
         if($alias) {
             $address = 'http://' . $alias->name;
         }
 
-        return redirect()->away($address);
+        return response($address,200);
     }
 
     /**

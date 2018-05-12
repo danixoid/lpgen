@@ -86,6 +86,12 @@ $(window).load(function () {
     //     loadPagesByDomain($("#selectDomain").val());
     // });
 
+    $('#viewSite').attr('href','http://' + $("#selectAlias option:selected").text());
+
+    $("#selectAlias").on('change',function(ev){
+        $('#viewSite').attr('href','http://' + $("#selectAlias option:selected").text());
+    });
+
     $('#preview').on('click',function() {
         window.open('/builder/preview/' + $('#selectDomain').val() + '/'
             + $('#pageTitle span span').text(),'_blank');
@@ -93,27 +99,19 @@ $(window).load(function () {
 
     $('#exportPage').on('click',function(ev) {
 
-        $(this).attr('href','/builder/publish/' + $('#selectDomain').val() + '/' + $('#selectAlias').val())
-        // $.ajax({
-        //     url : '/builder/publish',
-        //     data : JSON.stringify({
-        //         'domain_id' : $('#selectDomain').val(),
-        //         'alias_id' : $('#selectAlias').val()
-        //     }),
-        //     type: 'POST',
-        //     // dataType: 'json',
-        // }).done(function (response) {
-        //     window.open(response,'_blank');
-        // }).error(function (response) {
-        //     var mess = '';
-        //
-        //     console.log(response.responseText);
-        //     $.each(JSON.parse(response.responseText), function(index, value) {
-        //         mess += value + "\n";
-        //     });
-        //
-        //     alert(mess);
-        // });
+        $.ajax({
+            url : '/builder/publish',
+            data : JSON.stringify({
+                'domain_id' : $('#selectDomain').val(),
+                'alias_id' : $('#selectAlias').val()
+            }),
+            type: 'POST',
+            // dataType: 'json',
+        }).done(function (response) {
+            $('#savePage span.bLabel').html($('#savePage span.bLabel').html() + '/Опубликовано');
+        }).error(function (response) {
+            alert('Ошибка публикации. Попробуйте еще раз. Или обратитесь к администратору.');
+        });
     });
 
     $('#auth').submit(function(ev){

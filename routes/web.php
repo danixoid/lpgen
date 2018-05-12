@@ -56,7 +56,8 @@ Route::group(['domain' => env('LPGEN_KZ','b-apps.kz')], function () {
     Route::post('/builder/save', 'BuilderController@save')->name('builder.save');
 
     // Опубликовать страницы
-    Route::get('/builder/publish/{domain_id}/{alias_id?}', 'BuilderController@publish')->name('builder.publish.get');
+//    Route::get('/builder/publish/{domain_id}/{alias_id?}', 'BuilderController@publish')->name('builder.publish.get');
+    Route::post('/builder/publish', 'BuilderController@publish')->name('builder.publish');
 
     // Сохранение черновика/проекта
     Route::post('/builder/project', 'BuilderController@project')->name('builder.project');

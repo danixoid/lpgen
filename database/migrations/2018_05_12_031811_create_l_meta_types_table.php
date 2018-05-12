@@ -16,7 +16,7 @@ class CreateLMetaTypesTable extends Migration
         Schema::create('l_meta_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('content');
+            $table->string('content')->nullable();
             $table->timestamps();
         });
 

@@ -3,7 +3,6 @@
 @section('meta')
 
     @if(preg_match("/(content|skeleton)/",request()->path()))
-
         <style>
             .mfp-hide {
                 display: block !important;

@@ -27,14 +27,14 @@ class UserController extends Controller
     public function index()
     {
         $count = request('count') ?: 10;
-        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
+//        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
 
-        $users = \App\User::where(function($q) use ($is_admin) {
+        $users = \App\User::/*where(function($q) use ($is_admin) {
                     if(request()->ajax()) $q = $q->where('id','<>',\Auth::user()->id);
                     else if(!$is_admin) $q = $q->where('id','=',\Auth::user()->id);
                     return $q;
                 })
-            ->where(function($q) {
+            ->*/where(function($q) {
 
                 if(request('q')) {
                     return $q

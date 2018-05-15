@@ -98,7 +98,8 @@ class BuilderController extends Controller
      */
     public function iupload(Request $request)
     {
-        $uploads_dir = 'images';//specify the upload folder, make sure it's writable!
+        $domain = \App\LDomain::find($request->l_domain_id);
+        $uploads_dir = $domain->name . '/images';
 
         if ($request->hasFile('imageFileField')) 
         {
@@ -134,7 +135,7 @@ class BuilderController extends Controller
             $content .= $block->element;
         }
 
-        return view('content',['content' => $content]);
+        return view('content',['content' => $content, 'metas' => $page->l_domain->l_metas]);
     }
 
     /**

@@ -66,6 +66,16 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+    <style>
+    @if(isset($metas) && $metas)
+        @foreach($metas as $meta)
+            @if(mb_strtolower($meta->l_meta_type->name) == 'style')
+                {!! $meta->content !!}
+            @endif
+        @endforeach
+    @endif
+    </style>
 </head>
 
 <body data-spy="scroll" data-target="#main-navbar">

@@ -1222,11 +1222,16 @@ function styleClick(el) {
                 } else {
                     if (response.code == 1) {//success
 
-                        $('input#imageURL').val(response.response);
+                        //set the current SRC
+                        $('.imageFileTab').find('.fileinput-preview').append(imgPreview);
+                        $('.imageFileTab').find('input#imageURL').val(response.response);
 
                         //$(el).attr('src', response.response);
 
                         if ($(el).hasClass('bg-img')){
+
+                            var imgPreview = $('<img src="' + response.response + '" />');
+
                             var bgImgUrl = "url('"+response.response+"')";
                             $(el).css('background-image', bgImgUrl );
                             $(el).css('-webkit-background-size', 'cover');
@@ -1244,7 +1249,7 @@ function styleClick(el) {
 
                         /* SANDBOX */
 
-                        sandboxID = hasSandbox($(el))
+                        sandboxID = hasSandbox($(el));
 
                         if (sandboxID) {
 
@@ -2609,6 +2614,10 @@ $(function () {
             $('#uploadIcon').click();
         });
 
+
+        // $('#type_widget').val(editor.getSession().getValue());
+
+
         var newInput = $('<input type="hidden" name="alias_id" value="' + $('#selectAlias').val() + '">');
 
         $('#metaModal form').prepend(newInput);
@@ -2665,6 +2674,30 @@ $(function () {
 
                     $('#export_' + response[i].name).val(response[i].content);
                 }
+
+
+                var editorWidget = ace.edit('editorWidget');
+
+                editorWidget.setTheme("ace/theme/twilight");
+                editorWidget.getSession().setMode("ace/mode/html");
+                editorWidget.getSession().setValue($('#export_widget').val());
+                editorWidget.getSession().on("change", function () {
+                    $('#export_widget').val(editorWidget.getSession().getValue());
+                });
+
+                var editorStyle = ace.edit('editorStyle');
+
+                editorStyle.setTheme("ace/theme/twilight");
+                editorStyle.getSession().setMode("ace/mode/css");
+                editorStyle.getSession().setValue($('#export_style').val());
+                editorStyle.getSession().on("change", function () {
+                    $('#export_style').val(editorStyle.getSession().getValue());
+                });
+
+                $('#removeFavIcon').on('click',function(){
+                    $('#export_icon').val('');
+                    $('#img_icon').attr('src','/images/favicon.ico');
+                });
             }
         }).fail(function (response,status,xhr) {
             // window.location.reload();

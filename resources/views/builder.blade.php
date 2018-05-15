@@ -308,6 +308,7 @@
                        <label>Загрузить изображение:</label>
 
                        <div class="form-group">
+                           <input type="hidden" name="l_domain_id" value="{!! $domain->id !!}">
                            <div class="fileinput fileinput-new" data-provides="fileinput">
                                <div class="fileinput-preview thumbnail" style="width: 100%; height: 150px;"></div>
                                <div class="buttons">
@@ -2049,78 +2050,95 @@
 
     <form id="uploadIconForm" style="position: absolute; left: -1000px;" action="{!! route('builder.iupload'); !!}">
         {!! csrf_field() !!}
+        <input type="hidden" name="l_domain_id" value="{!! $domain->id !!}">
         <input type="file" name="imageFileField" id="uploadIcon">
     </form>
 
-    <form action="{!! route('builder.save'); !!}" id="markupForm" method="post" class="form-horizontal">
+    <form action="{!! route('builder.save'); !!}" id="markupForm" method="post" class="">
         {!! csrf_field() !!}
         <input type="hidden" name="markup" value="" id="markupField">
         <input type="hidden" name="domain_id" value="" id="domainHidden">
 
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                   <h4 class="modal-title" id="myModalLabel"><span class="fui-export"></span> Опции сайта</h4>
                 </div>
                 <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tabHeader">Заголовок</a></li>
+                        <li><a data-toggle="tab" href="#tabStyles">Стили</a></li>
+                        <li><a data-toggle="tab" href="#tabWidgets">Виджеты внизу страницы</a></li>
+                    </ul>
 
-                    <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label">Заголовок сайта</label>
-                        <div class="col-sm-9">
-                            <input type="hidden" name="type[title]" value="title" id="type_title">
-                            <input type="text" class="form-control" name="export[title]" id="export_title" placeholder="Название сайта" value="B-Apps LPGen">
+                    <div class="tab-content">
+                        <div id="tabHeader" class="tab-pane fade in active">
+
+                            <div class="form-group">
+                                <label for="title" class=" control-label">Favicon</label>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img src="/images/favicon.ico" id="img_icon" class="img-thumbnail" />
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="hidden" name="export[icon]" id="export_icon"/>
+                                        <input type="hidden" name="type[icon]" id="type_icon" value="favicon"/>
+                                        <span class="btn btn-primary btn-sm btn-embossed btn-file">
+                                            <span id="iconInput"><span class="fui-image"></span>&nbsp;&nbsp;Выберите картинку</span>
+                                        </span>
+                                        <a class="btn btn-danger btn-sm btn-embossed" id="removeFavIcon">Удалить</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title" class="control-label">Заголовок сайта</label>
+                                <input type="hidden" name="type[title]" value="title" id="type_title">
+                                <input type="text" class="form-control" name="export[title]" id="export_title" placeholder="Название сайта" value="B-Apps LPGen">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="desc" class=" control-label">Описание сайта</label>
+                                <input type="hidden" name="type[description]" value="meta" id="type_description">
+                                <textarea class="form-control" name="export[description]" id="export_description" placeholder="Это поле попадет в мета Description" rows="2" ></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="keyw" class=" control-label">Ключевые слова</label>
+                                <input type="hidden" name="type[keywords]" value="meta" id="type_keywords">
+                                <textarea class="form-control" name="export[keywords]" id="export_keywords" placeholder="Вводите ключевые слова через запятую" rows="2" ></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="keyw" class=" control-label">Автор</label>
+                                <input type="hidden" name="type[author]" value="meta" id="type_author">
+                                <textarea class="form-control" name="export[author]" id="export_author" placeholder="Автор странички"></textarea>
+                            </div>
+                        </div>
+                        <div id="tabStyles" class="tab-pane fade">
+
+                            <div class="form-group">
+                                <input type="hidden" name="type[style]" value="style" id="type_style">
+                                <input type="hidden" name="export[style]" id="export_style">
+                                <div id="editorStyle" style="min-height:200px"></div>
+                            </div>
+
+                        </div>
+                        <div id="tabWidgets" class="tab-pane fade">
+
+                            <div class="form-group">
+                                <input type="hidden" name="type[widget]" value="widget" id="type_widget">
+                                <input type="hidden" name="export[widget]" value="<script></script>" id="export_widget">
+                                <div id="editorWidget" style="min-height:200px"></div>
+                            </div>
+
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label">Favicon</label>
-
-                        <div class="col-sm-3">
-                            <img src="" id="img_icon" class="img-thumbnail" />
-                            <input type="hidden" name="export[icon]" id="export_icon"/>
-                            <input type="hidden" name="type[icon]" id="type_icon" value="favicon"/>
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="btn btn-primary btn-sm btn-embossed btn-file">
-                                <span id="iconInput"><span class="fui-image"></span>&nbsp;&nbsp;Выберите картинку</span>
-                            </span>
-                        </div>
-                    </div>
-
-                  <div class="form-group">
-                      <label for="desc" class="col-sm-3 control-label">Описание сайта</label>
-                      <div class="col-sm-9">
-                          <input type="hidden" name="type[description]" value="meta" id="type_description">
-                          <textarea class="form-control" name="export[description]" id="export_description" placeholder="Это поле попадет в мета Description" rows="2" ></textarea>
-                      </div>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="keyw" class="col-sm-3 control-label">Ключевые слова</label>
-                      <div class="col-sm-9">
-                          <input type="hidden" name="type[keywords]" value="meta" id="type_keywords">
-                          <textarea class="form-control" name="export[keywords]" id="export_keywords" placeholder="Вводите ключевые слова через запятую" rows="2" ></textarea>
-                      </div>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="keyw" class="col-sm-3 control-label">Автор</label>
-                      <div class="col-sm-9">
-                          <input type="hidden" name="type[author]" value="meta" id="type_author">
-                          <textarea class="form-control" name="export[author]" id="export_author" placeholder="Автор странички"></textarea>
-                      </div>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="keyw" class="col-sm-3 control-label">Виджеты внизу страницы</label>
-                      <div class="col-sm-9">
-                          <input type="hidden" name="type[widget]" value="widget" id="type_widget">
-                          <textarea class="form-control" name="export[widget]" id="export_widget" placeholder="<script></script>"></textarea>
-                      </div>
-                  </div>
 
                 </div><!-- /.modal-body -->
+
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal" id="exportCancel">Закрыть</button>
                   <button type="submit" class="btn btn-primary btn-embossed" id="exportSubmit">Сохранить настройки</button>

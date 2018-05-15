@@ -2047,6 +2047,11 @@
 
     -->
 
+    <form id="uploadIconForm" style="position: absolute; left: -1000px;" action="{!! route('builder.iupload'); !!}">
+        {!! csrf_field() !!}
+        <input type="file" name="imageFileField" id="uploadIcon">
+    </form>
+
     <form action="{!! route('builder.save'); !!}" id="markupForm" method="post" class="form-horizontal">
         {!! csrf_field() !!}
         <input type="hidden" name="markup" value="" id="markupField">
@@ -2060,13 +2065,28 @@
                 </div>
                 <div class="modal-body">
 
-                  <div class="form-group">
-                      <label for="title" class="col-sm-3 control-label">Заголовок сайта</label>
-                      <div class="col-sm-9">
-                          <input type="hidden" name="type[title]" value="title" id="type_title">
-                          <input type="text" class="form-control" name="export[title]" id="export_title" placeholder="Название сайта" value="B-Apps LPGen">
-                      </div>
-                  </div>
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label">Заголовок сайта</label>
+                        <div class="col-sm-9">
+                            <input type="hidden" name="type[title]" value="title" id="type_title">
+                            <input type="text" class="form-control" name="export[title]" id="export_title" placeholder="Название сайта" value="B-Apps LPGen">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label">Favicon</label>
+
+                        <div class="col-sm-3">
+                            <img src="" id="img_icon" class="img-thumbnail" />
+                            <input type="hidden" name="export[icon]" id="export_icon"/>
+                            <input type="hidden" name="type[icon]" id="type_icon" value="favicon"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="btn btn-primary btn-sm btn-embossed btn-file">
+                                <span id="iconInput"><span class="fui-image"></span>&nbsp;&nbsp;Выберите картинку</span>
+                            </span>
+                        </div>
+                    </div>
 
                   <div class="form-group">
                       <label for="desc" class="col-sm-3 control-label">Описание сайта</label>

@@ -16,16 +16,19 @@
             <title>{!! $meta->content !!}</title>
             @elseif(mb_strtolower($meta->l_meta_type->name) == 'meta')
             <meta name="{!! $meta->name !!}" content="{!! $meta->content !!}" />
+            @elseif(mb_strtolower($meta->l_meta_type->name) == 'favicon')
+            <link rel="shortcut {!! $meta->name !!}" href="{!! $meta->content !!}" type="image/x-icon">
+            <link rel="{!! $meta->name !!}" href="{!! $meta->content !!}" type="image/x-icon">
             @endif
         @endforeach
     @else
     <title>B-Apps - Landing Page with Page Builder</title>
+    <link rel="shortcut icon" href="/elements/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/elements/images/favicon.ico" type="image/x-icon">
     @endif
 
     <!-- FAVICON  -->
     <!-- Place your favicon.ico in the images directory -->
-    <link rel="shortcut icon" href="/elements/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/elements/images/favicon.ico" type="image/x-icon">
 
     <!-- =========================
        STYLESHEETS

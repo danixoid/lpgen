@@ -99,19 +99,21 @@ $(window).load(function () {
 
     $('#exportPage').on('click',function(ev) {
 
-        $.ajax({
-            url : '/builder/publish',
-            data : JSON.stringify({
-                'domain_id' : $('#selectDomain').val(),
-                'alias_id' : $('#selectAlias').val()
-            }),
-            type: 'POST',
-            // dataType: 'json',
-        }).done(function (response) {
-            $('#savePage span.bLabel').html($('#savePage span.bLabel').html() + '/Опубликовано');
-        }).error(function (response) {
-            alert('Ошибка публикации. Попробуйте еще раз. Или обратитесь к администратору.');
-        });
+        if(confirm('Все страницы будут опубликованы для всех поддоменов и алиасов. Уверены?')) {
+            $.ajax({
+                url: '/builder/publish',
+                data: JSON.stringify({
+                    'domain_id': $('#selectDomain').val(),
+                    'alias_id': $('#selectAlias').val()
+                }),
+                type: 'POST',
+                // dataType: 'json',
+            }).done(function (response) {
+                $('#savePage span.bLabel').html($('#savePage span.bLabel').html() + '/Опубликовано');
+            }).error(function (response) {
+                alert('Ошибка публикации. Попробуйте еще раз. Или обратитесь к администратору.');
+            });
+        }
     });
 
     $('#auth').submit(function(ev){
@@ -1707,16 +1709,12 @@ $(function () {
     });
 
     //detect mode
+    _mode = "server";
     if (window.location.protocol == 'file:') {
 
         _mode = "local";
 
-    } else {
-
-        _mode = "server";
-
     }
-
     //check if formData is supported
     if (!window.FormData) {
 
@@ -1726,7 +1724,6 @@ $(function () {
         $('.imageFileTab .or').hide();
 
     }
-
 
     //internal links dropdown
 
@@ -2607,9 +2604,48 @@ $(function () {
 
     $('#metaModal').on('shown.bs.modal', function (e) {
 
+        $('#iconInput').on('click', function(e){
+            e.preventDefault();
+            $('#uploadIcon').click();
+        });
+
         var newInput = $('<input type="hidden" name="alias_id" value="' + $('#selectAlias').val() + '">');
 
         $('#metaModal form').prepend(newInput);
+
+        $('#uploadIcon').on('change',function(ev){
+
+            var form = $('form#uploadIconForm');
+
+            var formdata = false;
+
+            if (window.FormData) {
+                formdata = new FormData(form[0]);
+            }
+
+            var formAction = form.attr('action');
+
+            $.ajax({
+                url: formAction,
+                data: formdata ? formdata : form.serialize(),
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                type: 'POST',
+            }).done(function (response,status) {
+                if (status == 401) {
+                    $('#auth.modal').modal('show');
+                } else {
+                    $('#img_icon').attr('src',response.response);
+                    $('#export_icon').val(response.response);
+                }
+            }).fail(function (response,status) {
+                if (status == 401) {
+                    $('#auth.modal').modal('show');
+                }
+            });
+        });
 
         $.ajax({
             url: '/builder/metas/' + $('#selectDomain').val(),
@@ -2619,19 +2655,22 @@ $(function () {
 
             // alert(xhr.status);
             if (xhr.status == 401) {
+                $('#metaModal').modal('hide');
                 $('#auth .modal').modal('show');
             } else {
                 for(var i = 0; i < response.length; i++) {
-                    console.log($('#export_' + response[i].name).val());
-                    $('#export_' + response[i].name).val(response[i].content);
+                    if(response[i].name === 'icon') {
+                        $('#img_' + response[i].name).attr('src',response[i].content);
+                    }
 
+                    $('#export_' + response[i].name).val(response[i].content);
                 }
             }
         }).fail(function (response,status,xhr) {
             // window.location.reload();
             //$('#auth .modal').modal('show');
             alert('Ошибка!');
-            $('#metaModal').modal('hide');
+            // $('#metaModal').modal('hide');
         });
     });
 

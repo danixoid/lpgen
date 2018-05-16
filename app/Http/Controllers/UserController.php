@@ -27,7 +27,6 @@ class UserController extends Controller
     public function index()
     {
         $count = request('count') ?: 10;
-//        $is_admin = (\Auth::user()->email == "danixoid@gmail.com");
 
         $users = \App\User::/*where(function($q) use ($is_admin) {
                     if(request()->ajax()) $q = $q->where('id','<>',\Auth::user()->id);
@@ -53,6 +52,8 @@ class UserController extends Controller
         }
 
         return view('user.index',['users' => $users->appends(Input::except('page'))]);
+
+//        return abort(404);
     }
 
     /**

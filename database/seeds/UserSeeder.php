@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -11,10 +12,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = \App\User::create([
-            'name' => 'danixoid',
+        $admin_role = \App\Role::where('name','admin')->first();
+
+        $user = \App\User::updateOrCreate([
             'email' => 'danixoid@gmail.com',
-            'password' => bcrypt('Roamer'),
+        ],[
+            'name' => 'danixoid',
+            'password' => Hash::make('Roamer'),
         ]);
+
+        $user->roles()->attach($admin_role);
     }
 }

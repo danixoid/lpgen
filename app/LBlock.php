@@ -13,19 +13,19 @@ class LBlock extends Model
 
         static::creating(
             function ($l_block) {
-                Log::info('NAME:' . $l_block->name
-                    . ' CONTENT:' . $l_block->content
-                    . ' DOMAIN:' . $l_block->l_page->l_domain->name
-                    . ' PAGE:' . $l_block->l_page->name);
+                Log::info("ELEMENT:" . $l_block->element
+                    . "\nFRAME:" . $l_block->frame
+                    . "\nDOMAIN:" . $l_block->l_page->l_domain->name
+                    . "\nPAGE:" . $l_block->l_page->name);
             }
         );
 
         static::updating(
             function ($l_block) {
-                Log::info('NAME:' . $l_block->name
-                    . ' CONTENT:' . $l_block->content
-                    . ' DOMAIN:' . $l_block->l_page->l_domain->name
-                    . ' PAGE:' . $l_block->l_page->name);
+                Log::info("ELEMENT:" . $l_block->element
+                    . "\nFRAME:" . $l_block->frame
+                    . "\nDOMAIN:" . $l_block->l_page->l_domain->name
+                    . "\nPAGE:" . $l_block->l_page->name);
             }
         );
     }

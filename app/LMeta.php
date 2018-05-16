@@ -13,17 +13,17 @@ class LMeta extends Model
 
         static::creating(
             function ($l_meta) {
-                Log::info('NAME:' . $l_meta->name
-                    . ' CONTENT:' . $l_meta->content
-                    . ' TYPE:' . $l_meta->l_meta_type->name);
+                Log::info("NAME:" . $l_meta->name
+                    . "\nCONTENT:" . $l_meta->content
+                    . "\nTYPE:" . $l_meta->l_meta_type->name);
             }
         );
 
         static::updating(
             function ($l_meta) {
-                Log::info('NAME:' . $l_meta->name
-                    . ' CONTENT:' . $l_meta->content
-                    . ' TYPE:' . $l_meta->l_meta_type->name);
+                Log::info("NAME:" . $l_meta->name
+                    . "\nCONTENT:" . $l_meta->content
+                    . "\nTYPE:" . $l_meta->l_meta_type->name);
             }
         );
     }
